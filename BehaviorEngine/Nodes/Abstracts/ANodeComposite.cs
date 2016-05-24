@@ -7,7 +7,7 @@ namespace BehaviorEngine
     {
         public List<INode> Children { get; set; }
 
-        public ANodeComposite(ABehaviorEngine master) : base(master)
+        public ANodeComposite()
         {
             Children = new List<INode>();
         }

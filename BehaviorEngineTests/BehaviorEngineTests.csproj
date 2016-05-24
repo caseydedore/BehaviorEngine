@@ -50,9 +50,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="EngineImplementation\Engine.cs" />
-    <Compile Include="EngineTests.cs" />
+    <Compile Include="Nodes\NodeTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RepeaterTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BehaviorEngine\BehaviorEngine.csproj">

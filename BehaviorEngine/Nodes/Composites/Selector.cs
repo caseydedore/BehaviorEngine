@@ -8,8 +8,6 @@ namespace BehaviorEngine
         private NodeState status = NodeState.Successful;
 
 
-        public Selector(ABehaviorEngine master) : base(master) { }
-
         public override NodeState Update()
         {
             for (index = 0; index < Children.Count; index++)

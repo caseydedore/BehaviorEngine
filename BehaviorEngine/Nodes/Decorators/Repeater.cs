@@ -4,39 +4,55 @@ namespace BehaviorEngine
 {
     public class Repeater : ANodeDecorator
     {
-        public int NumTimes { get; private set; }
-        private int numTimes = 0;
+        private uint RepeatTimesMax { get; set; }
+        private uint currentRepeatCount = 0;
+
+        private bool repeatForever = false;
+        private bool repeatIgnoringChildStatus = false;
+
+        private NodeState Status { get; set; }
 
 
-        //NumTimes of -1 means infinite
-        public Repeater(ABehaviorEngine master, int numTimes = -1) : base(master)
+        public Repeater()
         {
-            NumTimes = numTimes;
+            repeatForever = true;
+            repeatIgnoringChildStatus = true;
+        }
+
+        public Repeater(uint timesToRepeat, bool ignoreChildStatus)
+        {
+            RepeatTimesMax = timesToRepeat;
+            repeatIgnoringChildStatus = ignoreChildStatus;
         }
 
         public override NodeState Update()
         {
-            Child.End();
-            Child.Start();
-            var state = Child.Update();
+            if (Child == null) return NodeState.Error;
 
-            if (numTimes > 0)
+            if(Status != NodeState.Active)
             {
-                if (NumTimes != -1) numTimes--;
-            }
-            else
-            {
-                state =  NodeState.Successful;
+                if(!repeatForever) currentRepeatCount--;
+                Child.Start();
             }
 
-            return state;
+            Status = Child.Update();
+
+            if (Status != NodeState.Active)
+            {
+                Child.End();
+                if (!repeatIgnoringChildStatus) Status = NodeState.Active;
+
+                if (!repeatForever && currentRepeatCount <= 0)
+                    Status = NodeState.Successful;
+            }
+
+            return Status;
         }
 
         public override void Start()
         {
             base.Start();
-            if (NumTimes == -1) numTimes = 1;
-            else numTimes = NumTimes;
+            if (!repeatForever) currentRepeatCount = RepeatTimesMax;
         }
     }
 }

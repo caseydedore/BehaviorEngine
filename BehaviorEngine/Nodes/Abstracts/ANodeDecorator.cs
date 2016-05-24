@@ -8,8 +8,6 @@ namespace BehaviorEngine
         public INode Child { get; set; }
 
 
-        public ANodeDecorator(ABehaviorEngine master) : base(master) { }
-
         public override void Start()
         {
             base.Start();

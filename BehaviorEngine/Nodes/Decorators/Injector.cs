@@ -9,7 +9,7 @@ namespace BehaviorEngine
         private Func<NodeState> SuccessConditionDelegate;
 
 
-        public Injector(ABehaviorEngine master, Func<NodeState> getSuccessCondition) : base(master)
+        public Injector(Func<NodeState> getSuccessCondition)
         {
             SuccessConditionDelegate += getSuccessCondition;
         }

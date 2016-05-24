@@ -6,9 +6,8 @@ namespace BehaviorEngine
 {
     public class Inverter : ANodeDecorator
     {
-        public Inverter(ABehaviorEngine master) : base(master) { }
-
         private NodeState Status { get; set; }
+
 
         public override NodeState Update()
         {

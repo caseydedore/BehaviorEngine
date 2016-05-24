@@ -11,8 +11,8 @@ namespace BehaviorEngine
                           failure;
 
 
-        public Overrider(ABehaviorEngine master, NodeState successfulOverride = NodeState.Successful, 
-            NodeState activeOverride = NodeState.Active, NodeState failureOverride = NodeState.Failure) : base(master)
+        public Overrider(NodeState successfulOverride = NodeState.Successful, NodeState activeOverride = NodeState.Active, 
+            NodeState failureOverride = NodeState.Failure)
         {
             successful = successfulOverride;
             active = activeOverride;

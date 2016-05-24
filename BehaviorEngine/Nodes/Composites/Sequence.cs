@@ -10,8 +10,6 @@ namespace BehaviorEngine
         private NodeState status = NodeState.Successful;
 
 
-        public Sequence(ABehaviorEngine master) : base(master) { }
-
         public override NodeState Update()
         {
             for (; index < Children.Count; index++)

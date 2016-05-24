@@ -11,7 +11,7 @@ namespace BehaviorEngine
         public List<INode> ChildrenFailureDeterminers { get; set; }
 
 
-        public Parallel(ABehaviorEngine master) : base(master)
+        public Parallel(ABehaviorEngine master)
         {
             ChildrenSuccessDeterminers = new List<INode>();
             ChildrenFailureDeterminers = new List<INode>();
