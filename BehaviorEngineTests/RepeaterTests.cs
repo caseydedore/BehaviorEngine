@@ -1,6 +1,7 @@
 ﻿using BehaviorEngine;
-using BehaviorEngineTests.TestNodes;
+using BehaviorEngineTests.Nodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Diagnostics;
 
 namespace BehaviorEngineTests
 {
@@ -8,97 +9,105 @@ namespace BehaviorEngineTests
     public class RepeaterTests
     {
         [TestMethod]
-        public void NoChildTest()
+        public void ChildMissing()
         {
             //arrange
-            var repeater = new Repeater();
+            var repeater = new Repeater(5);
             var nodeStatus = NodeState.Error;
 
             //act
+            repeater.Start();
             nodeStatus = repeater.Update();
 
             //assert
-            Assert.AreEqual(nodeStatus, NodeState.Error);
+            Assert.AreEqual(NodeState.Error, nodeStatus);
         }
 
         [TestMethod]
-        public void SuccessChildTest()
+        public void ChildSuccessful()
         {
-            //arrange
-            var repeater = new Repeater();
+            var repeater = new Repeater(1);
             repeater.Child = new FixedResultNode(NodeState.Successful);
             var nodeStatus = NodeState.Error;
 
-            //act
+            repeater.Start();
             nodeStatus = repeater.Update();
 
-            //assert
-            Assert.AreEqual(nodeStatus, NodeState.Successful);
+            Assert.AreEqual(NodeState.Successful, nodeStatus);
         }
 
         [TestMethod]
-        public void FailureChildTest()
+        public void ChildFailure()
         {
-            //arrange
-            var repeater = new Repeater();
+            var repeater = new Repeater(1);
             repeater.Child = new FixedResultNode(NodeState.Failure);
             var nodeStatus = NodeState.Error;
 
-            //act
+            repeater.Start();
             nodeStatus = repeater.Update();
 
-            //assert
-            Assert.AreEqual(nodeStatus, NodeState.Failure);
+            Assert.AreEqual(NodeState.Failure, nodeStatus);
         }
 
         [TestMethod]
-        public void ActiveChildTest()
+        public void ChildActive()
         {
-            //arrange
-            var repeater = new Repeater();
+            var repeater = new Repeater(1);
             repeater.Child = new FixedResultNode(NodeState.Active);
             var nodeStatus = NodeState.Error;
 
-            //act
+            repeater.Start();
             nodeStatus = repeater.Update();
 
-            //assert
-            Assert.AreEqual(nodeStatus, NodeState.Active);
+            Assert.AreEqual(NodeState.Active, nodeStatus);
         }
 
         [TestMethod]
-        public void RepeatForeverTest()
+        public void ChildError()
         {
-            var repeater = new Repeater();
-            repeater.Child = new FixedResultNode(NodeState.Successful);
+            var repeater = new Repeater(1);
+            repeater.Child = new FixedResultNode(NodeState.Error);
+            var nodeStatus = NodeState.Error;
+
+            repeater.Start();
+            nodeStatus = repeater.Update();
+
+            Assert.AreEqual(NodeState.Error, nodeStatus);
+        }
+
+        [TestMethod]
+        public void RepeatOneTimeIgnoringChild()
+        {
+            var repeater = new Repeater(1, true);
+            repeater.Child = new FixedResultNode(NodeState.Active);
             var status = NodeState.Error;
-            var count = 0;
-            var expectedCount = 10000;
 
-            for(; count < expectedCount; count++)
-            {
-                status = repeater.Update();
+            repeater.Start();
+            status = repeater.Update();
 
-                if (status != NodeState.Active) break;
-            }
-
-            Assert.AreEqual(count, expectedCount);
+            Assert.AreEqual(NodeState.Successful, status);
         }
 
         [TestMethod]
-        public void RepeatForeverUntilChildNotActive()
+        public void RepeatFiveTimesIgnoringChild()
         {
             Assert.Fail();
         }
 
         [TestMethod]
-        public void RepeatOneTimeTest()
+        public void RepeatMultipleTimesStopOnChildFailure()
         {
             Assert.Fail();
         }
 
         [TestMethod]
-        public void RepeatFiveTimesTest()
+        public void RepeatMultipleTimesStopOnChildSuccessful()
+        {
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void RepeatMultipleTimesStopOnChildError()
         {
             Assert.Fail();
         }

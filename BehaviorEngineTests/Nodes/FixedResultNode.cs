@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BehaviorEngineTests.TestNodes
+namespace BehaviorEngineTests.Nodes
 {
     public class FixedResultNode : ANode
     {

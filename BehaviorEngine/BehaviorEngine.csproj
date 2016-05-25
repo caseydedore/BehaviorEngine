@@ -53,6 +53,7 @@
     <Compile Include="Nodes\Decorators\Inverter.cs" />
     <Compile Include="Nodes\Decorators\Overrider.cs" />
     <Compile Include="Nodes\Decorators\Repeater.cs" />
+    <Compile Include="Nodes\Decorators\RepeaterInfinite.cs" />
     <Compile Include="Nodes\Interfaces\INode.cs" />
     <Compile Include="Nodes\Interfaces\INodeDecorator.cs" />
     <Compile Include="Nodes\Interfaces\INodeTask.cs" />

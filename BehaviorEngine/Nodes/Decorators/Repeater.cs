@@ -7,22 +7,15 @@ namespace BehaviorEngine
         private uint RepeatTimesMax { get; set; }
         private uint currentRepeatCount = 0;
 
-        private bool repeatForever = false;
-        private bool repeatIgnoringChildStatus = false;
+        private bool ignoreChildStatus = false;
 
         private NodeState Status { get; set; }
 
 
-        public Repeater()
-        {
-            repeatForever = true;
-            repeatIgnoringChildStatus = true;
-        }
-
-        public Repeater(uint timesToRepeat, bool ignoreChildStatus)
+        public Repeater(uint timesToRepeat, bool ignoreChildStatus = false)
         {
             RepeatTimesMax = timesToRepeat;
-            repeatIgnoringChildStatus = ignoreChildStatus;
+            this.ignoreChildStatus = ignoreChildStatus;
         }
 
         public override NodeState Update()
@@ -31,28 +24,28 @@ namespace BehaviorEngine
 
             if(Status != NodeState.Active)
             {
-                if(!repeatForever) currentRepeatCount--;
+                currentRepeatCount--;
                 Child.Start();
             }
 
             Status = Child.Update();
 
-            if (Status != NodeState.Active)
-            {
-                Child.End();
-                if (!repeatIgnoringChildStatus) Status = NodeState.Active;
+            if (Status != NodeState.Active) Child.End();
 
-                if (!repeatForever && currentRepeatCount <= 0)
-                    Status = NodeState.Successful;
-            }
+            if (ignoreChildStatus && currentRepeatCount <= 0) return NodeState.Successful;
 
             return Status;
         }
 
         public override void Start()
         {
-            base.Start();
-            if (!repeatForever) currentRepeatCount = RepeatTimesMax;
+            currentRepeatCount = RepeatTimesMax;
+            Status = NodeState.Error;
+        }
+
+        public override void End()
+        {
+            Child.End();
         }
     }
 }
