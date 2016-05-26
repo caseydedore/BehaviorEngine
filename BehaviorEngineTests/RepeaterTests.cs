@@ -89,27 +89,125 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void RepeatFiveTimesIgnoringChild()
+        public void RepeatMultipleTimesIgnoringChild()
         {
-            Assert.Fail();
+            uint timesToRepeat = 5;
+            var repeater = new Repeater(timesToRepeat, true);
+            repeater.Child = new FixedResultNode(NodeState.Failure);
+            var status = NodeState.Error;
+            uint count = 1;
+
+            repeater.Start();
+
+            for (; count < 100; count++)
+            {
+                status = repeater.Update();
+                if (status == NodeState.Successful) break;
+            }
+
+            Assert.AreEqual(timesToRepeat, count);
+        }
+
+        [TestMethod]
+        public void RepeatMultipleTimesWithChildActive()
+        {
+            RepeatMultipleTimesStopOnChild(NodeState.Error, NodeState.Active, 51);
         }
 
         [TestMethod]
         public void RepeatMultipleTimesStopOnChildFailure()
         {
-            Assert.Fail();
+            RepeatMultipleTimesStopOnChild(NodeState.Error, NodeState.Failure, 51);
         }
 
         [TestMethod]
         public void RepeatMultipleTimesStopOnChildSuccessful()
         {
-            Assert.Fail();
+            RepeatMultipleTimesStopOnChild(NodeState.Error, NodeState.Successful, 51);
         }
 
         [TestMethod]
         public void RepeatMultipleTimesStopOnChildError()
         {
-            Assert.Fail();
+            RepeatMultipleTimesStopOnChild(NodeState.Successful, NodeState.Error, 51);
+        }
+
+        private void RepeatMultipleTimesStopOnChild(NodeState childReturn, NodeState childReturnFinal, int countUntilChildStops)
+        {
+            var repeater = new Repeater((uint)(countUntilChildStops + 10));
+            var childNode = new AdjustableResultNode() { Status = childReturn };
+            repeater.Child = childNode;
+            var status = NodeState.Error;
+            var count = 1;
+
+
+            for (; count < (countUntilChildStops + 10); count++)
+            {
+                if (count == countUntilChildStops) childNode.Status = childReturnFinal;
+
+                status = repeater.Update();
+                if (status == childReturnFinal) break;
+            }
+
+            Assert.AreEqual(countUntilChildStops, count);
+        }
+
+        [TestMethod]
+        public void ChildEndsWhenRepeaterEnds()
+        {
+            var repeater = new Repeater(3, true);
+            var childNode = new EventTrackingNode() { Status = NodeState.Successful };
+            repeater.Child = childNode;
+
+            repeater.Start();
+            repeater.Update();
+            repeater.Update();
+            repeater.Update();
+            Assert.IsTrue(childNode.HasEnded);
+        }
+
+        [TestMethod]
+        public void ChildEndsWhenRepeaterEndsDueToChildSuccess()
+        {
+            ChildEndsWhenRepeaterEndsDueToChild(NodeState.Successful);
+        }
+
+        [TestMethod]
+        public void ChildEndsWhenRepeaterEndsDueToChildFailure()
+        {
+            ChildEndsWhenRepeaterEndsDueToChild(NodeState.Failure);
+        }
+
+        [TestMethod]
+        public void ChildEndsWhenRepeaterEndsDueToChildError()
+        {
+            ChildEndsWhenRepeaterEndsDueToChild(NodeState.Error);
+        }
+
+        private void ChildEndsWhenRepeaterEndsDueToChild(NodeState childStateEnd)
+        {
+            var repeater = new Repeater(5, true);
+            var childNode = new EventTrackingNode() { Status = NodeState.Active };
+            repeater.Child = childNode;
+
+            repeater.Start();
+            repeater.Update();
+            repeater.Update();
+            childNode.Status = childStateEnd;
+            repeater.Update();
+            Assert.IsTrue(childNode.HasEnded);
+        }
+
+        [TestMethod]
+        public void ChildStartsWhenRepeaterUpdatesFirstTime()
+        {
+            var repeater = new Repeater(5);
+            var childNode = new EventTrackingNode() { Status = NodeState.Error };
+            repeater.Child = childNode;
+
+            repeater.Start();
+            repeater.Update();
+            Assert.IsTrue(childNode.HasStarted);
         }
     }
 }
