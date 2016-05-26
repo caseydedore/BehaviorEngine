@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BehaviorEngine.Nodes.Decorators
-{
+namespace BehaviorEngine
+{ 
+
     public class RepeaterInfinite : ANodeDecorator
     {
         private bool ignoreChildStatus = false;
