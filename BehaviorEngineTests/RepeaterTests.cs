@@ -103,7 +103,26 @@ namespace BehaviorEngineTests
             repeater.Update();
             repeater.Update();
 
-            Assert.AreEqual(NodeState.Successful, repeater.Status);
+            Assert.AreEqual(NodeState.Active, repeater.Status);
+        }
+
+        [TestMethod]
+        public void RepeatFiveTimesIgnoringChild()
+        {
+            var repeater = new Repeater(5, true);
+            repeater.Child = new FixedResultNode(NodeState.Successful);
+            var count = 1;
+
+            repeater.Start();
+
+            for(; count < 100; count++)
+            {
+                repeater.Update();
+
+                if (repeater.Status == NodeState.Successful) break;
+            }
+
+            Assert.AreEqual(5, count);
         }
 
         [TestMethod]
@@ -119,9 +138,9 @@ namespace BehaviorEngineTests
             repeater.Update();
             repeater.Update();
 
-            Assert.AreEqual(4, childNode.StartsTotal);
-            Assert.AreEqual(4, childNode.UpdatesTotal);
-            Assert.AreEqual(4, childNode.EndsTotal);
+            Assert.AreEqual(4, childNode.StartsTotal, "child start events");
+            Assert.AreEqual(4, childNode.UpdatesTotal, "child update events");
+            Assert.AreEqual(4, childNode.EndsTotal, "child end events");
         }
 
         [TestMethod]

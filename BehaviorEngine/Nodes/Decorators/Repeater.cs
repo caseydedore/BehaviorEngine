@@ -1,5 +1,4 @@
 ﻿
-
 namespace BehaviorEngine
 {
     public class Repeater : ANodeDecorator
@@ -8,6 +7,8 @@ namespace BehaviorEngine
         private uint currentRepeatCount = 0;
 
         private bool ignoreChildStatus = false;
+
+        private NodeState childStatus = NodeState.Inactive;
 
 
         public Repeater(uint timesToRepeat, bool ignoreChildStatus = false)
@@ -30,20 +31,20 @@ namespace BehaviorEngine
                 return;
             }
 
-            if(Status != NodeState.Active)
+            if(childStatus != NodeState.Active)
             {
                 currentRepeatCount--;
                 Child.Start();
             }
 
             Child.Update();
-            Status = Child.Status;
+            childStatus = Child.Status;
+            Status = childStatus;
 
             if (Status != NodeState.Active)
             {
                 Child.End();
-
-                if (ignoreChildStatus) Status = NodeState.Successful;
+                DetermineStatusIfIgnoringChildStatus();
             }
         }
 
@@ -51,12 +52,20 @@ namespace BehaviorEngine
         {
             currentRepeatCount = RepeatTimesMax;
             Status = NodeState.Inactive;
+            childStatus = NodeState.Inactive;
         }
 
         public override void End()
         {
             Child.End();
             Status = NodeState.Inactive;
+            childStatus = NodeState.Inactive;
+        }
+
+        private void DetermineStatusIfIgnoringChildStatus()
+        {
+            if (ignoreChildStatus && currentRepeatCount <= 0) Status = NodeState.Successful;
+            else if (ignoreChildStatus) Status = NodeState.Active;
         }
     }
 }
