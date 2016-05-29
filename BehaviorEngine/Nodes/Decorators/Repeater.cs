@@ -45,7 +45,6 @@ namespace BehaviorEngine
 
                 if (ignoreChildStatus) Status = NodeState.Successful;
             }
-            else if (ignoreChildStatus && currentRepeatCount <= 0) Status = NodeState.Successful;
         }
 
         public override void Start()
