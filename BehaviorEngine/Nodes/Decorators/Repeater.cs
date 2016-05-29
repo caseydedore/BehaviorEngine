@@ -9,8 +9,6 @@ namespace BehaviorEngine
 
         private bool ignoreChildStatus = false;
 
-        private NodeState Status { get; set; }
-
 
         public Repeater(uint timesToRepeat, bool ignoreChildStatus = false)
         {
@@ -18,9 +16,13 @@ namespace BehaviorEngine
             this.ignoreChildStatus = ignoreChildStatus;
         }
 
-        public override NodeState Update()
+        public override void Update()
         {
-            if (Child == null) return NodeState.Error;
+            if (Child == null)
+            {
+                Status = NodeState.Error;
+                return;
+            }
 
             if(Status != NodeState.Active)
             {
@@ -28,13 +30,12 @@ namespace BehaviorEngine
                 Child.Start();
             }
 
-            Status = Child.Update();
+            Child.Update();
+            Status = Child.Status;
 
             if (Status != NodeState.Active) Child.End();
 
-            if (ignoreChildStatus && currentRepeatCount <= 0) return NodeState.Successful;
-
-            return Status;
+            if (ignoreChildStatus && currentRepeatCount <= 0) Status = NodeState.Successful;
         }
 
         public override void Start()

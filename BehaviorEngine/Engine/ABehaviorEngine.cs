@@ -8,16 +8,17 @@ namespace BehaviorEngine
     {
         protected INode BaseNode { get; set; }
 
-        private NodeState status = NodeState.Successful;
+        private NodeState Status { get; set; }
 
 
         protected void Update()
         {
-            if(status != NodeState.Active) BaseNode.Start();
+            if(Status != NodeState.Active) BaseNode.Start();
 
-            status = BaseNode.Update();
+            BaseNode.Update();
+            Status = BaseNode.Status;
 
-            if (status != NodeState.Active) BaseNode.End();
+            if (Status != NodeState.Active) BaseNode.End();
         }
     }
 }

@@ -42,7 +42,8 @@ namespace BehaviorEngineTests
 
             for(; count <= 1000; count++)
             {
-                status = repeater.Update();
+                repeater.Update();
+                status = repeater.Status;
                 if (status != NodeState.Active) break;
             }
 

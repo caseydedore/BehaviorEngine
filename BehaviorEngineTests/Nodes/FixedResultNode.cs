@@ -9,17 +9,11 @@ namespace BehaviorEngineTests.Nodes
 {
     public class FixedResultNode : ANode
     {
-        private NodeState ReturnState { get; set; }
-
-
         public FixedResultNode(NodeState returnState)
         {
-            ReturnState = returnState;
+            Status = returnState;
         }
 
-        public override NodeState Update()
-        {
-            return ReturnState;
-        }
+        public override void Update() {}
     }
 }

@@ -9,12 +9,9 @@ namespace BehaviorEngineTests.Nodes
 {
     public class AdjustableResultNode : ANode
     {
-        public NodeState Status { get; set; }
+        new public NodeState Status { get; set; }
 
 
-        public override NodeState Update()
-        {
-            return Status;
-        }
+        public override void Update() {}
     }
 }

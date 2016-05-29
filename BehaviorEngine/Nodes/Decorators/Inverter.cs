@@ -6,16 +6,13 @@ namespace BehaviorEngine
 {
     public class Inverter : ANodeDecorator
     {
-        private NodeState Status { get; set; }
-
-
-        public override NodeState Update()
+        public override void Update()
         {
-            Status = Child.Update();
-            if (Status == NodeState.Successful) return NodeState.Failure;
-            else if (Status == NodeState.Failure) return NodeState.Successful;
+            Child.Update();
+            Status = Child.Status;
 
-            return Status;
+            if (Status == NodeState.Successful) Status = NodeState.Failure;
+            else if (Status == NodeState.Failure) Status = NodeState.Successful;
         }
     }
 }

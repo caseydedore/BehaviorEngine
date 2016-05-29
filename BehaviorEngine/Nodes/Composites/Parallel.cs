@@ -17,35 +17,34 @@ namespace BehaviorEngine
             ChildrenFailureDeterminers = new List<INode>();
         }
 
-        public override NodeState Update()
+        public override void Update()
         {
             for (int i=0; i < Children.Count; i++)
             {
-               var status = Children[i].Update();
+                Children[i].Update();
+                Status = Children[i].Status;
 
-                if (status == NodeState.Failure)
+                if (Status == NodeState.Failure)
                 {
                     if (ChildrenFailureDeterminers.Contains(Children[i]))
                     {
-                        return status;
+                        return;
                     }
 
                     Children[i].End();
                     Children[i].Start();
                 }
-                else if(status == NodeState.Successful)
+                else if(Status == NodeState.Successful)
                 {
                     if (ChildrenSuccessDeterminers.Contains(Children[i]))
                     {
-                        return status;
+                        return;
                     }
 
                     Children[i].End();
                     Children[i].Start();
                 }
             }
-
-            return NodeState.Active;
         }
 
         public override void Start()
@@ -56,7 +55,6 @@ namespace BehaviorEngine
             {
                 c.Start();
             }
-            
         }
 
         public override void End()

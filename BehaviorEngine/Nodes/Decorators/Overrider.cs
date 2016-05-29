@@ -19,15 +19,14 @@ namespace BehaviorEngine
             failure = failureOverride;
         }
 
-        private NodeState Status { get; set; }
-
-        public override NodeState Update()
+        public override void Update()
         {
-            Status = Child.Update();
-            if (Status == NodeState.Successful) return successful;
-            else if (Status == NodeState.Failure) return failure;
-            else if (Status == NodeState.Active) return active;
-            return Status;
+            Child.Update();
+            Status = Child.Status;
+
+            if (Status == NodeState.Successful) Status = successful;
+            else if (Status == NodeState.Failure) Status = failure;
+            else if (Status == NodeState.Active) Status = active;
         }
     }
 }

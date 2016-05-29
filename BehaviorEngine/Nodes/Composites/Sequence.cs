@@ -7,10 +7,9 @@ namespace BehaviorEngine
     {
         private int index = 0,
                     indexLastActive = -1;
-        private NodeState status = NodeState.Successful;
 
 
-        public override NodeState Update()
+        public override void Update()
         {
             for (; index < Children.Count; index++)
             {
@@ -19,20 +18,19 @@ namespace BehaviorEngine
                     indexLastActive = index;
                     Children[index].Start();
                 }
-                status = Children[index].Update();
+                Children[index].Update();
+                Status = Children[index].Status;
 
-                if (status == NodeState.Successful) Children[index].End();
+                if (Status == NodeState.Successful) Children[index].End();
                 else
                 {
-                    if (status == NodeState.Failure || status == NodeState.Error)
+                    if (Status == NodeState.Failure || Status == NodeState.Error)
                     {
                         End();
                     }
                     break;
                 }
             }
-
-            return status;
         }
 
         public override void Start()

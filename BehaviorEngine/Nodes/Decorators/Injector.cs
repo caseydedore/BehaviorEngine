@@ -14,12 +14,12 @@ namespace BehaviorEngine
             SuccessConditionDelegate += getSuccessCondition;
         }
 
-        public override NodeState Update()
+        public override void Update()
         {
-            var status = Child.Update();
-            if (status != NodeState.Active) status = SuccessConditionDelegate();
-            return status;
-            
+            Child.Update();
+            var Status = Child.Status;
+
+            if (Status != NodeState.Active) Status = SuccessConditionDelegate();            
         }
     }
 }

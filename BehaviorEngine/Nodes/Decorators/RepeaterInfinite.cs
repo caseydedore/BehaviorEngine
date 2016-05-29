@@ -11,35 +11,32 @@ namespace BehaviorEngine
     {
         private bool ignoreChildStatus = false;
 
-        private NodeState Status { get; set; }
-
 
         public RepeaterInfinite(bool ignoreChildStatus = false)
         {
             this.ignoreChildStatus = ignoreChildStatus;
         }
 
-        public override NodeState Update()
+        public override void Update()
         {
-            if (Child == null) return NodeState.Error;
+            if (Child == null) Status = NodeState.Error;
 
             if (Status != NodeState.Active)
             {
                 Child.Start();
             }
 
-            Status = Child.Update();
+            Child.Update();
+            Status = Child.Status;
 
             if (Status != NodeState.Active)
             {
                 Child.End();
 
-                if (ignoreChildStatus) return NodeState.Active;
+                if (ignoreChildStatus) Status = NodeState.Active;
             }
 
-            if (ignoreChildStatus) return NodeState.Successful;
-
-            return Status;
+            if (ignoreChildStatus) Status = NodeState.Successful;
         }
 
         public override void End()

@@ -7,7 +7,7 @@ namespace BehaviorEngine
     {
         private ABehaviorEngine Master { get; set; }
 
-        protected NodeState Status { get; set; }
+        public NodeState Status { get; protected set; }
 
 
         public ANodeTask(ABehaviorEngine master)
@@ -16,9 +16,9 @@ namespace BehaviorEngine
             Master = master;
         }
 
-        public NodeState Update()
+        public void Update()
         {
-            return Status;
+            throw new NotImplementedException();
         }
 
         public abstract void Start();

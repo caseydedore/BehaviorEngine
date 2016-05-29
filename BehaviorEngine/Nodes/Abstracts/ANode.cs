@@ -5,7 +5,9 @@ namespace BehaviorEngine
 {
     public abstract class ANode : INode
     {
-        public abstract NodeState Update();
+        public NodeState Status { get; protected set; }
+
+        public abstract void Update();
 
         public virtual void Start() {}
 

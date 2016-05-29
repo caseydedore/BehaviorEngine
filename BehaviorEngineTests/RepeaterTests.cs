@@ -17,7 +17,8 @@ namespace BehaviorEngineTests
 
             //act
             repeater.Start();
-            nodeStatus = repeater.Update();
+            repeater.Update();
+            nodeStatus = repeater.Status;
 
             //assert
             Assert.AreEqual(NodeState.Error, nodeStatus);
@@ -31,7 +32,8 @@ namespace BehaviorEngineTests
             var nodeStatus = NodeState.Error;
 
             repeater.Start();
-            nodeStatus = repeater.Update();
+            repeater.Update();
+            nodeStatus = repeater.Status;
 
             Assert.AreEqual(NodeState.Successful, nodeStatus);
         }
@@ -44,7 +46,8 @@ namespace BehaviorEngineTests
             var nodeStatus = NodeState.Error;
 
             repeater.Start();
-            nodeStatus = repeater.Update();
+            repeater.Update();
+            nodeStatus = repeater.Status;
 
             Assert.AreEqual(NodeState.Failure, nodeStatus);
         }
@@ -57,7 +60,8 @@ namespace BehaviorEngineTests
             var nodeStatus = NodeState.Error;
 
             repeater.Start();
-            nodeStatus = repeater.Update();
+            repeater.Update();
+            nodeStatus = repeater.Status;
 
             Assert.AreEqual(NodeState.Active, nodeStatus);
         }
@@ -70,7 +74,8 @@ namespace BehaviorEngineTests
             var nodeStatus = NodeState.Error;
 
             repeater.Start();
-            nodeStatus = repeater.Update();
+            repeater.Update();
+            nodeStatus = repeater.Status;
 
             Assert.AreEqual(NodeState.Error, nodeStatus);
         }
@@ -83,7 +88,8 @@ namespace BehaviorEngineTests
             var status = NodeState.Error;
 
             repeater.Start();
-            status = repeater.Update();
+            repeater.Update();
+            status = repeater.Status;
 
             Assert.AreEqual(NodeState.Successful, status);
         }
@@ -101,7 +107,9 @@ namespace BehaviorEngineTests
 
             for (; count < 100; count++)
             {
-                status = repeater.Update();
+                repeater.Update();
+                status = repeater.Status;
+
                 if (status == NodeState.Successful) break;
             }
 
@@ -145,7 +153,9 @@ namespace BehaviorEngineTests
             {
                 if (count == countUntilChildStops) childNode.Status = childReturnFinal;
 
-                status = repeater.Update();
+                repeater.Update();
+                status = repeater.Status;
+
                 if (status == childReturnFinal) break;
             }
 
