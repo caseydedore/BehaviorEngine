@@ -31,7 +31,6 @@ namespace BehaviorEngineTests
             RepeatWithChildReturn(NodeState.Active);
         }
 
-
         private void RepeatWithChildReturn(NodeState childStatus)
         {
             var repeater = new RepeaterInfinite();

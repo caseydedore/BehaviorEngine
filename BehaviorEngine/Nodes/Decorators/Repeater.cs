@@ -40,12 +40,12 @@ namespace BehaviorEngine
         public override void Start()
         {
             currentRepeatCount = RepeatTimesMax;
-            Status = NodeState.Error;
         }
 
         public override void End()
         {
             Child.End();
+            Status = NodeState.Inactive;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿
 namespace BehaviorEngine
 {
-    public enum NodeState { Successful, Active, Failure, Error };
+    public enum NodeState { Successful, Active, Failure, Error, Inactive };
 }

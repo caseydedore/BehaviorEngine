@@ -41,5 +41,11 @@ namespace BehaviorEngine
 
             return Status;
         }
+
+        public override void End()
+        {
+            Status = NodeState.Inactive;
+            Child.End();
+        }
     }
 }
