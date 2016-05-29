@@ -9,9 +9,28 @@ namespace BehaviorEngineTests.Nodes
 {
     public class AdjustableResultNode : ANode
     {
-        new public NodeState Status { get; set; }
+        private NodeState statusOverride = NodeState.Inactive;
+        private bool useStatusOverride = false;
 
 
-        public override void Update() {}
+        public AdjustableResultNode(NodeState defaultState)
+        {
+            Status = defaultState;
+        }
+
+        public override void Update()
+        {
+            if(useStatusOverride)
+            {
+                Status = statusOverride;
+                useStatusOverride = false;
+            }
+        }
+
+        public void SetStatusOnNextUpdate(NodeState status)
+        {
+            statusOverride = status;
+            useStatusOverride = true;
+        }
     }
 }

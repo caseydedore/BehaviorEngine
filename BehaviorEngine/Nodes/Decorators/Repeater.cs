@@ -24,6 +24,12 @@ namespace BehaviorEngine
                 return;
             }
 
+            if(currentRepeatCount <= 0)
+            {
+                Status = NodeState.Inactive;
+                return;
+            }
+
             if(Status != NodeState.Active)
             {
                 currentRepeatCount--;
@@ -33,14 +39,19 @@ namespace BehaviorEngine
             Child.Update();
             Status = Child.Status;
 
-            if (Status != NodeState.Active) Child.End();
+            if (Status != NodeState.Active)
+            {
+                Child.End();
 
-            if (ignoreChildStatus && currentRepeatCount <= 0) Status = NodeState.Successful;
+                if (ignoreChildStatus) Status = NodeState.Successful;
+            }
+            else if (ignoreChildStatus && currentRepeatCount <= 0) Status = NodeState.Successful;
         }
 
         public override void Start()
         {
             currentRepeatCount = RepeatTimesMax;
+            Status = NodeState.Inactive;
         }
 
         public override void End()
