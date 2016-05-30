@@ -273,7 +273,7 @@ namespace BehaviorEngineTests
         public void RepeatInactiveAfterCountDepletion()
         {
             var repeater = new Repeater(1);
-            repeater.Child = new FixedResultNode(NodeState.Active);
+            repeater.Child = new FixedResultNode(NodeState.Inactive);
 
             repeater.Start();
             repeater.Update();
