@@ -37,6 +37,7 @@ namespace BehaviorEngineTests.Nodes
 
         public override void Update()
         {
+            base.Update();
             UpdatesTotal++;
             UpdatesCurrent++;
         }

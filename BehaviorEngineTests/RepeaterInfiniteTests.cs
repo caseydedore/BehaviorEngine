@@ -62,7 +62,16 @@ namespace BehaviorEngineTests
         [TestMethod]
         public void EndOnChildError()
         {
-            Assert.Fail("NO TEST");
+            var repeater = new RepeaterInfinite();
+            var childNode = new EventTrackingNode(NodeState.Inactive);
+            repeater.Child = childNode;
+
+            repeater.Start();
+            childNode.SetStatusOnNextUpdate(NodeState.Error);
+            repeater.Update();
+
+            Assert.AreEqual(NodeState.Error, repeater.Status);
+            Assert.AreEqual(true, childNode.HasEnded);
         }
 
         [TestMethod]
@@ -82,7 +91,16 @@ namespace BehaviorEngineTests
         [TestMethod]
         public void RepeatWithChildFailure()
         {
-            Assert.Fail("NO TEST");
+            var repeater = new RepeaterInfinite();
+            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            repeater.Child = childNode;
+
+            repeater.Start();
+            repeater.Update();
+            childNode.SetStatusOnNextUpdate(NodeState.Failure);
+            repeater.Update();
+
+            Assert.AreEqual(NodeState.Failure, repeater.Status);
         }
 
         [TestMethod]
@@ -95,11 +113,13 @@ namespace BehaviorEngineTests
         public void RepeatWithChildActive()
         {
             var repeater = new RepeaterInfinite();
-            repeater.Child = new FixedResultNode(NodeState.Active);
+            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            repeater.Child = childNode;
             var status = NodeState.Error;
             var count = 1;
 
             repeater.Start();
+            childNode.SetStatusOnNextUpdate(NodeState.Active);
 
             for (; count < 1000; count++)
             {

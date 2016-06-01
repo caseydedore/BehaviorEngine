@@ -195,7 +195,6 @@ namespace BehaviorEngineTests
             childNode.SetStatusOnNextUpdate(childReturnFinal);
             repeater.Update();
 
-
             Assert.AreEqual(childReturnFinal, repeater.Status);
         }
 
@@ -210,6 +209,7 @@ namespace BehaviorEngineTests
             repeater.Update();
             repeater.Update();
             repeater.Update();
+
             Assert.IsTrue(childNode.HasEnded);
         }
 
