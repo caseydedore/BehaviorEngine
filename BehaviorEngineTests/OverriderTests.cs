@@ -97,5 +97,39 @@ namespace BehaviorEngineTests
 
             Assert.AreEqual(overrideStatus, overrider.Status);
         }
+
+        [TestMethod]
+        public void OverrideToFailureEndChild()
+        {
+            var overrider = new Overrider();
+            overrider.ActiveOverride = NodeState.Failure;
+            var childNode = new EventTrackingNode(NodeState.Inactive);
+            overrider.Child = childNode;
+
+            overrider.Start();
+            childNode.SetStatusOnNextUpdate(NodeState.Active);
+            overrider.Update();
+
+            Assert.IsTrue(childNode.HasEnded);
+            Assert.AreEqual(1, childNode.EndsTotal);
+            Assert.AreNotEqual(overrider.Status, childNode.Status);
+        }
+
+        [TestMethod]
+        public void OverrideChildToSuccessEndChild()
+        {
+            var overrider = new Overrider();
+            overrider.ActiveOverride = NodeState.Successful;
+            var childNode = new EventTrackingNode(NodeState.Inactive);
+            overrider.Child = childNode;
+
+            overrider.Start();
+            childNode.SetStatusOnNextUpdate(NodeState.Active);
+            overrider.Update();
+
+            Assert.IsTrue(childNode.HasEnded);
+            Assert.AreEqual(1, childNode.EndsTotal);
+            Assert.AreNotEqual(overrider.Status, childNode.Status);
+        }
     }
 }
