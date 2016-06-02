@@ -81,52 +81,43 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void RepeatOneTimeIgnoringChild()
+        public void IgnoreChildSuccess()
         {
-            var repeater = new Repeater(1, true);
-            repeater.Child = new FixedResultNode(NodeState.Inactive);
+            var repeater = new Repeater(2, true);
+            repeater.Child = new FixedResultNode(NodeState.Successful);
 
             repeater.Start();
-            repeater.Update();
-
-            Assert.AreEqual(NodeState.Successful, repeater.Status);
-        }
-
-        [TestMethod]
-        public void RepeatMultipleTimesIgnoringChild()
-        {
-            var repeater = new Repeater(10, true);
-            repeater.Child = new FixedResultNode(NodeState.Inactive);
-
-            repeater.Start();
-            repeater.Update();
-            repeater.Update();
             repeater.Update();
 
             Assert.AreEqual(NodeState.Active, repeater.Status);
         }
 
         [TestMethod]
-        public void RepeatFiveTimesIgnoringChild()
+        public void IgnoreChildFailure()
         {
-            var repeater = new Repeater(5, true);
-            repeater.Child = new FixedResultNode(NodeState.Successful);
-            var count = 1;
+            var repeater = new Repeater(2, true);
+            repeater.Child = new FixedResultNode(NodeState.Failure);
 
             repeater.Start();
+            repeater.Update();
 
-            for(; count < 100; count++)
-            {
-                repeater.Update();
-
-                if (repeater.Status == NodeState.Successful) break;
-            }
-
-            Assert.AreEqual(5, count);
+            Assert.AreEqual(NodeState.Active, repeater.Status);
         }
 
         [TestMethod]
-        public void RepeatMultipleTimesIgnoringChildCheckChildEvents()
+        public void IgnoreChildError()
+        {
+            var repeater = new Repeater(2, true);
+            repeater.Child = new FixedResultNode(NodeState.Error);
+
+            repeater.Start();
+            repeater.Update();
+
+            Assert.AreEqual(NodeState.Active, repeater.Status);
+        }
+
+        [TestMethod]
+        public void RepeatMultipleTimesIgnoringChildTrackEvents()
         {
             var repeater = new Repeater(5, true);
             var childNode = new EventTrackingNode(NodeState.Inactive);
@@ -144,7 +135,7 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void RepeatOneTimeCheckChildEvents()
+        public void RepeatOneTimeTrackEvents()
         {
             var repeater = new Repeater(1);
             var childNode = new EventTrackingNode(NodeState.Inactive);
@@ -156,46 +147,6 @@ namespace BehaviorEngineTests
             Assert.AreEqual(1, childNode.StartsTotal);
             Assert.AreEqual(1, childNode.UpdatesTotal);
             Assert.AreEqual(1, childNode.EndsTotal);
-        }
-
-        [TestMethod]
-        public void RepeatMultipleTimesWithChildActive()
-        {
-            RepeatMultipleTimesStopOnChild(NodeState.Inactive, NodeState.Active, 51);
-        }
-
-        [TestMethod]
-        public void RepeatMultipleTimesStopOnChildFailure()
-        {
-            RepeatMultipleTimesStopOnChild(NodeState.Inactive, NodeState.Failure, 51);
-        }
-
-        [TestMethod]
-        public void RepeatMultipleTimesStopOnChildSuccessful()
-        {
-            RepeatMultipleTimesStopOnChild(NodeState.Inactive, NodeState.Successful, 51);
-        }
-
-        [TestMethod]
-        public void RepeatMultipleTimesStopOnChildError()
-        {
-            RepeatMultipleTimesStopOnChild(NodeState.Inactive, NodeState.Error, 51);
-        }
-
-        private void RepeatMultipleTimesStopOnChild(NodeState childReturn, NodeState childReturnFinal, int countUntilChildStops)
-        {
-            var repeater = new Repeater((uint)(countUntilChildStops + 10));
-            var childNode = new AdjustableResultNode(childReturn);
-            repeater.Child = childNode;
-
-            repeater.Start();
-            repeater.Update();
-            repeater.Update(); 
-            repeater.Update();
-            childNode.SetStatusOnNextUpdate(childReturnFinal);
-            repeater.Update();
-
-            Assert.AreEqual(childReturnFinal, repeater.Status);
         }
 
         [TestMethod]
@@ -214,38 +165,6 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void ChildEndsWhenRepeaterEndsDueToChildSuccess()
-        {
-            ChildEndsWhenRepeaterEndsDueToChild(NodeState.Successful);
-        }
-
-        [TestMethod]
-        public void ChildEndsWhenRepeaterEndsDueToChildFailure()
-        {
-            ChildEndsWhenRepeaterEndsDueToChild(NodeState.Failure);
-        }
-
-        [TestMethod]
-        public void ChildEndsWhenRepeaterEndsDueToChildError()
-        {
-            ChildEndsWhenRepeaterEndsDueToChild(NodeState.Error);
-        }
-
-        private void ChildEndsWhenRepeaterEndsDueToChild(NodeState childStateEnd)
-        {
-            var repeater = new Repeater(5, true);
-            var childNode = new EventTrackingNode(NodeState.Inactive);
-            repeater.Child = childNode;
-
-            repeater.Start();
-            repeater.Update();
-            repeater.Update();
-            childNode.SetStatusOnNextUpdate(childStateEnd);
-            repeater.Update();
-            Assert.IsTrue(childNode.HasEnded);
-        }
-
-        [TestMethod]
         public void ChildStartsWhenRepeaterUpdatesFirstTime()
         {
             var repeater = new Repeater(5);
@@ -255,6 +174,7 @@ namespace BehaviorEngineTests
             repeater.Start();
             repeater.Update();
             Assert.IsTrue(childNode.HasStarted);
+            Assert.AreEqual(1, childNode.StartsTotal);
         }
 
         [TestMethod]
