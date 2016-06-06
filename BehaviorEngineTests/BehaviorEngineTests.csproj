@@ -51,9 +51,9 @@
   </Choose>
   <ItemGroup>
     <Compile Include="InverterTests.cs" />
-    <Compile Include="Nodes\AdjustableResultNode.cs" />
+    <Compile Include="Nodes\AdjustableStateNode.cs" />
     <Compile Include="Nodes\EventTrackingNode.cs" />
-    <Compile Include="Nodes\FixedResultNode.cs" />
+    <Compile Include="Nodes\FixedStateNode.cs" />
     <Compile Include="OverriderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepeaterInfiniteTests.cs" />

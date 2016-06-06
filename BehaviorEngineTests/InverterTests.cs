@@ -1,4 +1,5 @@
 ﻿using BehaviorEngine;
+using BehaviorEngineTests.Nodes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -21,28 +22,53 @@ namespace BehaviorEngineTests
         [TestMethod]
         public void ChildSuccess()
         {
-            Assert.Fail("No Test");
+            var inverter = new Inverter();
+            var childNode = new FixedStateNode(NodeState.Successful);
+            inverter.Child = childNode;
+
+            inverter.Start();
+            inverter.Update();
+
+            Assert.AreEqual(NodeState.Failure, inverter.Status);
         }
 
         [TestMethod]
         public void ChildFailure()
         {
-            Assert.Fail("No Test");
+            var inverter = new Inverter();
+            var childNode = new FixedStateNode(NodeState.Failure);
+            inverter.Child = childNode;
 
+            inverter.Start();
+            inverter.Update();
+
+            Assert.AreEqual(NodeState.Successful, inverter.Status);
         }
 
         [TestMethod]
         public void ChildError()
         {
-            Assert.Fail("No Test");
+            var inverter = new Inverter();
+            var childNode = new FixedStateNode(NodeState.Error);
+            inverter.Child = childNode;
 
+            inverter.Start();
+            inverter.Update();
+
+            Assert.AreEqual(NodeState.Error, inverter.Status);
         }
 
         [TestMethod]
         public void ChildActive()
         {
-            Assert.Fail("No Test");
+            var inverter = new Inverter();
+            var childNode = new FixedStateNode(NodeState.Active);
+            inverter.Child = childNode;
 
+            inverter.Start();
+            inverter.Update();
+
+            Assert.AreEqual(NodeState.Active, inverter.Status);
         }
     }
 }

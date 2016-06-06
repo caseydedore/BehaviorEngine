@@ -122,7 +122,7 @@ namespace BehaviorEngineTests
         public void EndOnChildFailure()
         {
             var repeater = new RepeaterInfinite();
-            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
             repeater.Start();
@@ -137,7 +137,7 @@ namespace BehaviorEngineTests
         public void EndOnChildError()
         {
             var repeater = new RepeaterInfinite();
-            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
             repeater.Start();
@@ -152,7 +152,7 @@ namespace BehaviorEngineTests
         public void ChildActive()
         {
             var repeater = new RepeaterInfinite();
-            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
             var status = NodeState.Error;
             var count = 1;
@@ -174,7 +174,7 @@ namespace BehaviorEngineTests
         public void IgnoreChildFailure()
         {
             var repeater = new RepeaterInfinite(true);
-            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
             repeater.Start();
@@ -189,7 +189,7 @@ namespace BehaviorEngineTests
         public void IgnoreChildError()
         {
             var repeater = new RepeaterInfinite(true);
-            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
             repeater.Start();
@@ -204,7 +204,7 @@ namespace BehaviorEngineTests
         public void IgnoreChildSuccess()
         {
             var repeater = new RepeaterInfinite(true);
-            var childNode = new AdjustableResultNode(NodeState.Inactive);
+            var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
             repeater.Start();

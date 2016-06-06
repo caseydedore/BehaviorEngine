@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BehaviorEngineTests.Nodes
 {
-    class EventTrackingNode : AdjustableResultNode
+    class EventTrackingNode : AdjustableStateNode
     {
         public bool HasStarted { get { return hasStarted; } }
         private bool hasStarted = false;

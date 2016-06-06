@@ -28,7 +28,7 @@ namespace BehaviorEngineTests
         public void ChildSuccessful()
         {
             var repeater = new Repeater(1);
-            repeater.Child = new FixedResultNode(NodeState.Successful);
+            repeater.Child = new FixedStateNode(NodeState.Successful);
             var nodeStatus = NodeState.Inactive;
 
             repeater.Start();
@@ -42,7 +42,7 @@ namespace BehaviorEngineTests
         public void ChildFailure()
         {
             var repeater = new Repeater(1);
-            repeater.Child = new FixedResultNode(NodeState.Failure);
+            repeater.Child = new FixedStateNode(NodeState.Failure);
             var nodeStatus = NodeState.Inactive;
 
             repeater.Start();
@@ -56,7 +56,7 @@ namespace BehaviorEngineTests
         public void ChildActive()
         {
             var repeater = new Repeater(1);
-            repeater.Child = new FixedResultNode(NodeState.Active);
+            repeater.Child = new FixedStateNode(NodeState.Active);
             var nodeStatus = NodeState.Inactive;
 
             repeater.Start();
@@ -70,7 +70,7 @@ namespace BehaviorEngineTests
         public void ChildError()
         {
             var repeater = new Repeater(1);
-            repeater.Child = new FixedResultNode(NodeState.Error);
+            repeater.Child = new FixedStateNode(NodeState.Error);
             var nodeStatus = NodeState.Inactive;
 
             repeater.Start();
@@ -84,7 +84,7 @@ namespace BehaviorEngineTests
         public void IgnoreChildSuccess()
         {
             var repeater = new Repeater(2, true);
-            repeater.Child = new FixedResultNode(NodeState.Successful);
+            repeater.Child = new FixedStateNode(NodeState.Successful);
 
             repeater.Start();
             repeater.Update();
@@ -96,7 +96,7 @@ namespace BehaviorEngineTests
         public void IgnoreChildFailure()
         {
             var repeater = new Repeater(2, true);
-            repeater.Child = new FixedResultNode(NodeState.Failure);
+            repeater.Child = new FixedStateNode(NodeState.Failure);
 
             repeater.Start();
             repeater.Update();
@@ -108,7 +108,7 @@ namespace BehaviorEngineTests
         public void IgnoreChildError()
         {
             var repeater = new Repeater(2, true);
-            repeater.Child = new FixedResultNode(NodeState.Error);
+            repeater.Child = new FixedStateNode(NodeState.Error);
 
             repeater.Start();
             repeater.Update();
@@ -181,7 +181,7 @@ namespace BehaviorEngineTests
         public void RepeatInactiveWithNoCount()
         {
             var repeater = new Repeater(0);
-            repeater.Child = new FixedResultNode(NodeState.Active);
+            repeater.Child = new FixedStateNode(NodeState.Active);
 
             repeater.Start();
             repeater.Update();
@@ -193,7 +193,7 @@ namespace BehaviorEngineTests
         public void RepeatInactiveAfterCountDepletion()
         {
             var repeater = new Repeater(1);
-            repeater.Child = new FixedResultNode(NodeState.Inactive);
+            repeater.Child = new FixedStateNode(NodeState.Inactive);
 
             repeater.Start();
             repeater.Update();

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace BehaviorEngineTests.Nodes
 {
-    public class FixedResultNode : ANode
+    public class FixedStateNode : ANode
     {
-        public FixedResultNode(NodeState returnState)
+        public FixedStateNode(NodeState returnState)
         {
             Status = returnState;
         }

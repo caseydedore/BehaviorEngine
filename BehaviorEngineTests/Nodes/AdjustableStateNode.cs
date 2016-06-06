@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace BehaviorEngineTests.Nodes
 {
-    public class AdjustableResultNode : ANode
+    public class AdjustableStateNode : ANode
     {
         private NodeState statusOverride = NodeState.Inactive;
         private bool useStatusOverride = false;
 
 
-        public AdjustableResultNode(NodeState defaultState)
+        public AdjustableStateNode(NodeState defaultState)
         {
             Status = defaultState;
         }
