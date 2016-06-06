@@ -99,7 +99,7 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void OverrideToFailureEndChild()
+        public void OverrideToFailureEndsChild()
         {
             var overrider = new Overrider();
             overrider.ActiveOverride = NodeState.Failure;
@@ -116,7 +116,7 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void OverrideChildToSuccessEndChild()
+        public void OverrideToSuccessEndsChild()
         {
             var overrider = new Overrider();
             overrider.ActiveOverride = NodeState.Successful;

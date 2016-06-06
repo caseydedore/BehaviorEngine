@@ -8,6 +8,12 @@ namespace BehaviorEngine
     {
         public override void Update()
         {
+            if(Child == null)
+            {
+                Status = NodeState.Error;
+                return;
+            }
+
             Child.Update();
             Status = Child.Status;
 

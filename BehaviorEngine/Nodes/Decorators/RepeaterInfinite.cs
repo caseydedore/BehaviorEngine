@@ -46,15 +46,14 @@ namespace BehaviorEngine
 
         public override void Start()
         {
-            Status = NodeState.Inactive;
+            base.Start();
             childStatus = NodeState.Inactive;
         }
 
         public override void End()
         {
-            Status = NodeState.Inactive;
+            base.End();
             childStatus = NodeState.Inactive;
-            Child.End();
         }
     }
 }

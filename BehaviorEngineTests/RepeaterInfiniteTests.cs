@@ -37,7 +37,7 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void EndChildBeforeUpdate()
+        public void EndBeforeUpdate()
         {
             var repeater = new RepeaterInfinite();
             var childNode = new EventTrackingNode(NodeState.Inactive);
@@ -46,7 +46,9 @@ namespace BehaviorEngineTests
             repeater.Start();
             repeater.End();
 
-            Assert.AreEqual(true, childNode.HasEnded);
+            Assert.AreEqual(false, childNode.HasStarted);
+            Assert.AreEqual(false, childNode.HasEnded);
+            Assert.AreEqual(0, childNode.UpdatesTotal);
         }
 
         [TestMethod]

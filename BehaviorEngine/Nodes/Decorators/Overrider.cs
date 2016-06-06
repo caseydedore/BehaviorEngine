@@ -36,12 +36,8 @@ namespace BehaviorEngine
 
         public override void Start()
         {
+            base.Start();
             childStatus = NodeState.Inactive;
-        }
-
-        public override void End()
-        {
-            if (Child.Status == NodeState.Active) Child.End();
         }
     }
 }

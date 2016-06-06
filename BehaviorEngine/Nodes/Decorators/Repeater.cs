@@ -50,15 +50,14 @@ namespace BehaviorEngine
 
         public override void Start()
         {
+            base.Start();
             currentRepeatCount = RepeatTimesMax;
-            Status = NodeState.Inactive;
             childStatus = NodeState.Inactive;
         }
 
         public override void End()
         {
-            Child.End();
-            Status = NodeState.Inactive;
+            base.End();
             childStatus = NodeState.Inactive;
         }
 
