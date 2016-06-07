@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="InjectorTests.cs" />
     <Compile Include="InverterTests.cs" />
     <Compile Include="Nodes\AdjustableStateNode.cs" />
     <Compile Include="Nodes\EventTrackingNode.cs" />

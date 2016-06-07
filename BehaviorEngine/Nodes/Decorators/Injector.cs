@@ -16,10 +16,16 @@ namespace BehaviorEngine
 
         public override void Update()
         {
-            Child.Update();
-            var Status = Child.Status;
+            if(Child == null)
+            {
+                Status = NodeState.Error;
+                return;
+            }
 
-            if (Status != NodeState.Active) Status = SuccessConditionDelegate();            
+            Child.Update();
+            Status = Child.Status;
+
+            if (Status != NodeState.Active && Status != NodeState.Error) Status = SuccessConditionDelegate();            
         }
     }
 }
