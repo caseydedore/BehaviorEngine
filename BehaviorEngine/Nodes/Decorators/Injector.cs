@@ -1,12 +1,11 @@
 ﻿
-using System.Collections;
 using System;
 
 namespace BehaviorEngine
 {
     public class Injector : ANodeDecorator
     {
-        private Func<NodeState> SuccessConditionDelegate;
+        public Func<NodeState> SuccessConditionDelegate { get; set; }
 
 
         public Injector(Func<NodeState> getSuccessCondition)
