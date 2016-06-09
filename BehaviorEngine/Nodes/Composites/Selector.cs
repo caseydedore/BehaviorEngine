@@ -9,6 +9,13 @@ namespace BehaviorEngine
 
         public override void Update()
         {
+            if(Children.Count <= 0)
+            {
+                Status = NodeState.Error;
+                return;
+            }
+
+
             for (index = 0; index < Children.Count; index++)
             {
                 if (index != indexLastActive)
