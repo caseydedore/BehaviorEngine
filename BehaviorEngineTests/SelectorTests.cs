@@ -28,11 +28,9 @@ namespace BehaviorEngineTests
 
             selector.Start();
             selector.Update();
-            selector.End();
 
             Assert.IsTrue(childNode.HasStarted);
             Assert.AreEqual(1, childNode.UpdatesTotal);
-            Assert.IsTrue(childNode.HasEnded);
             Assert.AreEqual(NodeState.Successful, selector.Status);
         }
 
@@ -45,11 +43,9 @@ namespace BehaviorEngineTests
 
             selector.Start();
             selector.Update();
-            selector.End();
 
             Assert.IsTrue(childNode.HasStarted);
             Assert.AreEqual(1, childNode.UpdatesTotal);
-            Assert.IsTrue(childNode.HasEnded);
             Assert.AreEqual(NodeState.Failure, selector.Status);
         }
 
@@ -65,7 +61,6 @@ namespace BehaviorEngineTests
 
             Assert.IsTrue(childNode.HasStarted);
             Assert.AreEqual(1, childNode.UpdatesTotal);
-            Assert.IsFalse(childNode.HasEnded);
             Assert.AreEqual(NodeState.Active, selector.Status);
         }
 
@@ -78,11 +73,9 @@ namespace BehaviorEngineTests
 
             selector.Start();
             selector.Update();
-            selector.End();
 
             Assert.IsTrue(childNode.HasStarted);
             Assert.AreEqual(1, childNode.UpdatesTotal);
-            Assert.IsTrue(childNode.HasEnded);
             Assert.AreEqual(NodeState.Error, selector.Status);
         }
 
@@ -96,7 +89,6 @@ namespace BehaviorEngineTests
 
             selector.Start();
             selector.Update();
-            selector.End();
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
             Assert.AreEqual(0, secondChild.UpdatesTotal);
@@ -113,7 +105,6 @@ namespace BehaviorEngineTests
 
             selector.Start();
             selector.Update();
-            selector.End();
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
             Assert.AreEqual(1, secondChild.UpdatesTotal);
@@ -130,11 +121,80 @@ namespace BehaviorEngineTests
 
             selector.Start();
             selector.Update();
-            selector.End();
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
             Assert.AreEqual(1, secondChild.UpdatesTotal);
             Assert.AreEqual(NodeState.Failure, selector.Status);
+        }
+
+        [TestMethod]
+        public void FirstChildActive()
+        {
+            var selector = new Selector();
+            var firstChild = new EventTrackingNode(NodeState.Active);
+            var secondChild = new EventTrackingNode(NodeState.Successful);
+            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+
+            selector.Start();
+            selector.Update();
+            selector.Update();
+            selector.Update();
+
+            Assert.AreEqual(3, firstChild.UpdatesTotal);
+            Assert.AreEqual(0, secondChild.UpdatesTotal);
+            Assert.AreEqual(NodeState.Active, selector.Status);
+        }
+
+        [TestMethod]
+        public void SecondChildActive()
+        {
+            var selector = new Selector();
+            var firstChild = new EventTrackingNode(NodeState.Failure);
+            var secondChild = new EventTrackingNode(NodeState.Active);
+            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+
+            selector.Start();
+            selector.Update();
+            selector.Update();
+            selector.Update();
+
+            Assert.AreEqual(3, firstChild.UpdatesTotal);
+            Assert.AreEqual(3, secondChild.UpdatesTotal);
+            Assert.AreEqual(NodeState.Active, selector.Status);
+        }
+
+        [TestMethod]
+        public void EarlierChildActiveTakesPrecedence()
+        {
+            var selector = new Selector();
+            var firstChild = new EventTrackingNode(NodeState.Failure);
+            var secondChild = new EventTrackingNode(NodeState.Active);
+            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+
+            selector.Start();
+            selector.Update();
+            firstChild.SetStatusOnNextUpdate(NodeState.Active);
+            selector.Update();
+
+            Assert.AreEqual(2, firstChild.UpdatesTotal);
+            Assert.AreEqual(1, secondChild.UpdatesTotal);
+        }
+
+        [TestMethod]
+        public void EarlierChildSuccessTakesPrecedence()
+        {
+            var selector = new Selector();
+            var firstChild = new EventTrackingNode(NodeState.Failure);
+            var secondChild = new EventTrackingNode(NodeState.Active);
+            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+
+            selector.Start();
+            selector.Update();
+            firstChild.SetStatusOnNextUpdate(NodeState.Successful);
+            selector.Update();
+
+            Assert.AreEqual(2, firstChild.UpdatesTotal);
+            Assert.AreEqual(1, secondChild.UpdatesTotal);
         }
     }
 }

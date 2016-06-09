@@ -15,7 +15,6 @@ namespace BehaviorEngine
                 return;
             }
 
-
             for (index = 0; index < Children.Count; index++)
             {
                 if (index != indexLastActive)
@@ -26,11 +25,7 @@ namespace BehaviorEngine
                 Children[index].Update();
                 Status = Children[index].Status;
 
-                if (Status == NodeState.Successful)
-                {
-                    End();
-                    break;
-                }
+                if (Status == NodeState.Successful) break;
                 else if (Status == NodeState.Active)
                 {
                     if (index != indexLastActive)
@@ -55,7 +50,6 @@ namespace BehaviorEngine
         public override void End()
         {
             base.End();
-            foreach (var c in Children) c.End();
             indexLastActive = -1;
         }
     }
