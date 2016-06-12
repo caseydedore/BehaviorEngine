@@ -7,19 +7,19 @@ namespace BehaviorEngine
 {
     public class Parallel : ANodeComposite
     {
-        public List<INode> ChildrenSuccessDeterminers { get; set; }
-        public List<INode> ChildrenFailureDeterminers { get; set; }
-
         public bool SucceedIfOneChildSucceeds { get; set; }
         public bool FailIfOneChildFails { get; set; }
+
+        private int childrenSuccessful = 0,
+                    childrenFailed = 0;
 
         private int index = 0;
 
 
         public Parallel()
         {
-            ChildrenSuccessDeterminers = new List<INode>();
-            ChildrenFailureDeterminers = new List<INode>();
+            SucceedIfOneChildSucceeds = true;
+            FailIfOneChildFails = true;
         }
 
         public override void Update()
@@ -30,50 +30,30 @@ namespace BehaviorEngine
                 return;
             }
 
-            for (index=0; index < Children.Count; index++)
+            for (index = 0; index < Children.Count; index++)
             {
+                if(Children[index].Status != NodeState.Active)
+                {
+                    Children[index].Start();
+                }
+
                 Children[index].Update();
                 Status = Children[index].Status;
 
                 if (Status == NodeState.Failure)
                 {
-                    if (ChildrenFailureDeterminers.Contains(Children[index]))
-                    {
-                        return;
-                    }
-
+                    childrenFailed++;
                     Children[index].End();
-                    Children[index].Start();
+
+                    if (FailIfOneChildFails || childrenFailed >= Children.Count) return;
                 }
                 else if(Status == NodeState.Successful)
                 {
-                    if (ChildrenSuccessDeterminers.Contains(Children[index]))
-                    {
-                        return;
-                    }
-
+                    childrenSuccessful++;
                     Children[index].End();
-                    Children[index].Start();
+
+                    if (SucceedIfOneChildSucceeds || childrenSuccessful >= Children.Count) return;
                 }
-            }
-        }
-
-        public override void Start()
-        {
-            base.Start();
-
-            foreach(var c in Children)
-            {
-                c.Start();
-            }
-        }
-
-        public override void End()
-        {
-            base.End();
-            foreach (var c in Children)
-            {
-                if(c.Status == NodeState.Active) c.End();
             }
         }
     }
