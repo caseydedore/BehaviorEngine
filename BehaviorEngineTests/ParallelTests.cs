@@ -83,6 +83,18 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
+        public void InactiveChildNotEndedAgain()
+        {
+            var parallel = new Parallel();
+            var childNode = new EventTrackingNode(NodeState.Inactive);
+            parallel.Children.Add(childNode);
+
+            parallel.End();
+
+            Assert.IsFalse(childNode.HasEnded);
+        }
+
+        [TestMethod]
         public void EndOnFirstChildFail()
         {
             var parallel = new Parallel();
@@ -90,12 +102,10 @@ namespace BehaviorEngineTests
             var secondChildNode = new EventTrackingNode(NodeState.Active);
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
-            parallel.FailIfOneChildFails = true;
 
             parallel.Start();
             parallel.Update();
 
-            
             Assert.AreEqual(NodeState.Failure, parallel.Status);
         }
 
@@ -115,38 +125,6 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void EndOnAllChildrenFail()
-        {
-            var parallel = new Parallel();
-            var firstChildNode = new EventTrackingNode(NodeState.Failure);
-            var secondChildNode = new EventTrackingNode(NodeState.Failure);
-            parallel.Children.Add(firstChildNode);
-            parallel.Children.Add(secondChildNode);
-            parallel.FailIfOneChildFails = false;
-
-            parallel.Start();
-            parallel.Update();
-
-            Assert.AreEqual(NodeState.Failure, parallel.Status);
-        }
-
-        [TestMethod]
-        public void ContinueOnOneChildFail()
-        {
-            var parallel = new Parallel();
-            var firstChildNode = new EventTrackingNode(NodeState.Failure);
-            var secondChildNode = new EventTrackingNode(NodeState.Active);
-            parallel.Children.Add(firstChildNode);
-            parallel.Children.Add(secondChildNode);
-            parallel.FailIfOneChildFails = false;
-
-            parallel.Start();
-            parallel.Update();
-
-            Assert.AreEqual(NodeState.Active, parallel.Status);
-        }
-
-        [TestMethod]
         public void EndOnFirstChildSuccess()
         {
             var parallel = new Parallel();
@@ -154,7 +132,6 @@ namespace BehaviorEngineTests
             var secondChildNode = new EventTrackingNode(NodeState.Active);
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
-            parallel.FailIfOneChildFails = true;
 
             parallel.Start();
             parallel.Update();
@@ -176,38 +153,6 @@ namespace BehaviorEngineTests
             parallel.Update();
 
             Assert.AreEqual(NodeState.Successful, parallel.Status);
-        }
-
-        [TestMethod]
-        public void EndOnAllChildrenSuccess()
-        {
-            var parallel = new Parallel();
-            var firstChildNode = new EventTrackingNode(NodeState.Successful);
-            var secondChildNode = new EventTrackingNode(NodeState.Successful);
-            parallel.Children.Add(firstChildNode);
-            parallel.Children.Add(secondChildNode);
-            parallel.FailIfOneChildFails = false;
-
-            parallel.Start();
-            parallel.Update();
-
-            Assert.AreEqual(NodeState.Successful, parallel.Status);
-        }
-
-        [TestMethod]
-        public void ContinueOnOneChildSuccess()
-        {
-            var parallel = new Parallel();
-            var firstChildNode = new EventTrackingNode(NodeState.Successful);
-            var secondChildNode = new EventTrackingNode(NodeState.Active);
-            parallel.Children.Add(firstChildNode);
-            parallel.Children.Add(secondChildNode);
-            parallel.SucceedIfOneChildSucceeds = false;
-
-            parallel.Start();
-            parallel.Update();
-
-            Assert.AreEqual(NodeState.Active, parallel.Status);
         }
     }
 }
