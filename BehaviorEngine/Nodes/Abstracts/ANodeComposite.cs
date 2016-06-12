@@ -3,21 +3,26 @@ using System;
 
 namespace BehaviorEngine
 {
-    public abstract class ANodeComposite : ANode
+    public abstract class ANodeComposite : INode
     {
+        public NodeState Status { get; protected set; }
+
         public List<INode> Children { get; set; }
+
 
         public ANodeComposite()
         {
             Children = new List<INode>();
         }
 
-        public override void Start()
+        public abstract void Update();
+
+        public virtual void Start()
         {
             Status = NodeState.Inactive;
         }
 
-        public override void End()
+        public virtual void End()
         {
             foreach (var c in Children)
             {

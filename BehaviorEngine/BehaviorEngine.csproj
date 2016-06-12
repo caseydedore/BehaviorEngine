@@ -42,7 +42,6 @@
   <ItemGroup>
     <Compile Include="Engine\ABehaviorEngine.cs" />
     <Compile Include="Engine\NodeStates.cs" />
-    <Compile Include="Nodes\Abstracts\ANode.cs" />
     <Compile Include="Nodes\Abstracts\ANodeComposite.cs" />
     <Compile Include="Nodes\Abstracts\ANodeDecorator.cs" />
     <Compile Include="Nodes\Abstracts\ANodeTask.cs" />

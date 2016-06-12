@@ -3,16 +3,20 @@ using System;
 
 namespace BehaviorEngine
 {
-    public abstract class ANodeDecorator : ANode
+    public abstract class ANodeDecorator : INode
     {
+        public NodeState Status { get; protected set; }
+
         public INode Child { get; set; }
 
-        public override void Start()
+        public abstract void Update();
+
+        public virtual void Start()
         {
             Status = NodeState.Inactive;
         }
 
-        public override void End()
+        public virtual void End()
         {
             if (Child != null && Child.Status == NodeState.Active) Child.End();
             Status = NodeState.Inactive;

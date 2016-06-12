@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace BehaviorEngineTests.Nodes
 {
-    public class AdjustableStateNode : ANode
+    public class AdjustableStateNode : INode
     {
+        public NodeState Status { get; protected set; }
+
         private NodeState statusOverride = NodeState.Inactive;
         private bool useStatusOverride = false;
 
@@ -18,7 +20,7 @@ namespace BehaviorEngineTests.Nodes
             Status = defaultState;
         }
 
-        public override void Update()
+        public virtual void Update()
         {
             if(useStatusOverride)
             {
@@ -32,5 +34,9 @@ namespace BehaviorEngineTests.Nodes
             statusOverride = status;
             useStatusOverride = true;
         }
+
+        public virtual void Start() { }
+
+        public virtual void End() { }
     }
 }

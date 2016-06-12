@@ -7,13 +7,20 @@ using System.Threading.Tasks;
 
 namespace BehaviorEngineTests.Nodes
 {
-    public class FixedStateNode : ANode
+    public class FixedStateNode : INode
     {
+        public NodeState Status { get; protected set; }
+
+
         public FixedStateNode(NodeState returnState)
         {
             Status = returnState;
         }
 
-        public override void Update() {}
+        public void Update() {}
+
+        public void Start() { }
+
+        public void End() { }
     }
 }

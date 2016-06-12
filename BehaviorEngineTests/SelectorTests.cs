@@ -85,7 +85,7 @@ namespace BehaviorEngineTests
             var selector = new Selector();
             var firstChild = new EventTrackingNode(NodeState.Successful);
             var secondChild = new EventTrackingNode(NodeState.Successful);
-            selector.Children.AddRange( new List<ANode>() { firstChild, secondChild });
+            selector.Children.AddRange( new List<INode>() { firstChild, secondChild });
 
             selector.Start();
             selector.Update();
@@ -101,7 +101,7 @@ namespace BehaviorEngineTests
             var selector = new Selector();
             var firstChild = new EventTrackingNode(NodeState.Failure);
             var secondChild = new EventTrackingNode(NodeState.Successful);
-            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
             selector.Start();
             selector.Update();
@@ -117,7 +117,7 @@ namespace BehaviorEngineTests
             var selector = new Selector();
             var firstChild = new EventTrackingNode(NodeState.Failure);
             var secondChild = new EventTrackingNode(NodeState.Failure);
-            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
             selector.Start();
             selector.Update();
@@ -133,7 +133,7 @@ namespace BehaviorEngineTests
             var selector = new Selector();
             var firstChild = new EventTrackingNode(NodeState.Active);
             var secondChild = new EventTrackingNode(NodeState.Successful);
-            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
             selector.Start();
             selector.Update();
@@ -151,7 +151,7 @@ namespace BehaviorEngineTests
             var selector = new Selector();
             var firstChild = new EventTrackingNode(NodeState.Failure);
             var secondChild = new EventTrackingNode(NodeState.Active);
-            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
             selector.Start();
             selector.Update();
@@ -169,7 +169,7 @@ namespace BehaviorEngineTests
             var selector = new Selector();
             var firstChild = new EventTrackingNode(NodeState.Failure);
             var secondChild = new EventTrackingNode(NodeState.Active);
-            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
             selector.Start();
             selector.Update();
@@ -186,7 +186,7 @@ namespace BehaviorEngineTests
             var selector = new Selector();
             var firstChild = new EventTrackingNode(NodeState.Failure);
             var secondChild = new EventTrackingNode(NodeState.Active);
-            selector.Children.AddRange(new List<ANode>() { firstChild, secondChild });
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
             selector.Start();
             selector.Update();
