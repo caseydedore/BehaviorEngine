@@ -154,29 +154,5 @@ namespace BehaviorEngineTests
 
             Assert.AreEqual(NodeState.Successful, parallel.Status);
         }
-
-        [TestMethod]
-        public void AllMustFailButOneChildFails()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod]
-        public void AllMustFailAndAllChildrenFail()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod]
-        public void AllMustSucceedButOneChildSucceeds()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod]
-        public void AllMustSucceedAndAllChildrenSucceed()
-        {
-            Assert.Fail();
-        }
     }
 }
