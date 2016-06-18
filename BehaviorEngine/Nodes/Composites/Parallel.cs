@@ -1,13 +1,12 @@
-﻿
-using System.Collections;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace BehaviorEngine
 {
     public class Parallel : ANodeComposite
     {
         private int index = 0;
+
+        private NodeState[] ChildrenStatusAlias { get; set; }
 
 
         public override void Update()
@@ -20,13 +19,11 @@ namespace BehaviorEngine
 
             for (index = 0; index < Children.Count; index++)
             {
-                if (Children[index].Status != NodeState.Active)
-                {
-                    Children[index].Start();
-                }
+                if (ChildrenStatusAlias[index] != NodeState.Active) continue;
 
                 Children[index].Update();
                 Status = Children[index].Status;
+                ChildrenStatusAlias[index] = Status;
 
                 if (Status == NodeState.Failure)
                 {
@@ -38,6 +35,22 @@ namespace BehaviorEngine
                     Children[index].End();
                     return;
                 }
+            }
+        }
+
+        public override void Start()
+        {
+            base.Start();
+
+            if (ChildrenStatusAlias == null)
+            {
+                ChildrenStatusAlias = new NodeState[Children.Count];
+            }
+
+            for (var i = 0; i < Children.Count; i++)
+            {
+                Children[i].Start();
+                ChildrenStatusAlias[i] = NodeState.Active;
             }
         }
     }
