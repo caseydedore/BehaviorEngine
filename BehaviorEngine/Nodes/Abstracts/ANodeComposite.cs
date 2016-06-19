@@ -31,5 +31,17 @@ namespace BehaviorEngine
 
             Status = NodeState.Inactive;
         }
+
+        protected int GetNumberOfChildrenWithStatus(NodeState status)
+        {
+            var number = 0;
+
+            foreach (var c in Children)
+            {
+                if (c.Status == status) number++;
+            }
+
+            return number;
+        }
     }
 }

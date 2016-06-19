@@ -154,5 +154,52 @@ namespace BehaviorEngineTests
 
             Assert.AreEqual(NodeState.Successful, parallel.Status);
         }
+
+        [TestMethod]
+        public void ChildrenStopUpdatingWhenComplete()
+        {
+            var parallel = new Parallel();
+            var firstChildNode = new EventTrackingNode(NodeState.Active);
+            var secondChildNode = new EventTrackingNode(NodeState.Active);
+            parallel.Children.Add(firstChildNode);
+            parallel.Children.Add(secondChildNode);
+            parallel.ShouldUpdateUntilAllChildrenComplete = true;
+
+            parallel.Start();
+            parallel.Update();
+            parallel.Update();
+            firstChildNode.SetStatusOnNextUpdate(NodeState.Successful);
+            parallel.Update();
+            parallel.Update();
+            secondChildNode.SetStatusOnNextUpdate(NodeState.Successful);
+            parallel.Update();
+
+            Assert.AreEqual(3, firstChildNode.UpdatesTotal);
+            Assert.AreEqual(5, secondChildNode.UpdatesTotal);
+        }
+
+        [TestMethod]
+        public void SuccessWithAllChildrenMustReturn()
+        {
+            var parallel = new Parallel();
+            var firstChildNode = new EventTrackingNode(NodeState.Active);
+            var secondChildNode = new EventTrackingNode(NodeState.Successful);
+            parallel.Children.Add(firstChildNode);
+            parallel.Children.Add(secondChildNode);
+            parallel.ShouldUpdateUntilAllChildrenComplete = true;
+
+            parallel.Start();
+            parallel.Update();
+            firstChildNode.SetStatusOnNextUpdate(NodeState.Successful);
+            parallel.Update();
+            firstChildNode.SetStatusOnNextUpdate(NodeState.Successful);
+            parallel.Update();
+
+            Assert.AreEqual(2, firstChildNode.UpdatesTotal);
+            Assert.AreEqual(NodeState.Successful, firstChildNode.Status);
+            Assert.AreEqual(1, secondChildNode.UpdatesTotal);
+            Assert.AreEqual(NodeState.Successful, secondChildNode.Status);
+            Assert.AreEqual(NodeState.Successful, parallel.Status);
+        }
     }
 }
