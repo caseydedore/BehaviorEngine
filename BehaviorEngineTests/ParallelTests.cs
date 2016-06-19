@@ -179,11 +179,11 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void SuccessWithAllChildrenMustReturn()
+        public void SuccessWithAllChildren()
         {
             var parallel = new Parallel();
             var firstChildNode = new EventTrackingNode(NodeState.Active);
-            var secondChildNode = new EventTrackingNode(NodeState.Successful);
+            var secondChildNode = new EventTrackingNode(NodeState.Active);
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
             parallel.ShouldUpdateUntilAllChildrenComplete = true;
@@ -192,14 +192,52 @@ namespace BehaviorEngineTests
             parallel.Update();
             firstChildNode.SetStatusOnNextUpdate(NodeState.Successful);
             parallel.Update();
-            firstChildNode.SetStatusOnNextUpdate(NodeState.Successful);
+            secondChildNode.SetStatusOnNextUpdate(NodeState.Successful);
             parallel.Update();
 
             Assert.AreEqual(2, firstChildNode.UpdatesTotal);
-            Assert.AreEqual(NodeState.Successful, firstChildNode.Status);
-            Assert.AreEqual(1, secondChildNode.UpdatesTotal);
-            Assert.AreEqual(NodeState.Successful, secondChildNode.Status);
+            Assert.AreEqual(3, secondChildNode.UpdatesTotal);
             Assert.AreEqual(NodeState.Successful, parallel.Status);
+        }
+
+        [TestMethod]
+        public void FailureWithAllChildren()
+        {
+            var parallel = new Parallel();
+            var firstChildNode = new EventTrackingNode(NodeState.Active);
+            var secondChildNode = new EventTrackingNode(NodeState.Active);
+            parallel.Children.Add(firstChildNode);
+            parallel.Children.Add(secondChildNode);
+            parallel.ShouldUpdateUntilAllChildrenComplete = true;
+
+            parallel.Start();
+            parallel.Update();
+            firstChildNode.SetStatusOnNextUpdate(NodeState.Failure);
+            parallel.Update();
+            secondChildNode.SetStatusOnNextUpdate(NodeState.Failure);
+            parallel.Update();
+
+            Assert.AreEqual(2, firstChildNode.UpdatesTotal);
+            Assert.AreEqual(3, secondChildNode.UpdatesTotal);
+            Assert.AreEqual(NodeState.Failure, parallel.Status);
+        }
+
+        [TestMethod]
+        public void ErrorInterruptsUpdateWithAllChildren()
+        {
+            var parallel = new Parallel();
+            var firstChildNode = new EventTrackingNode(NodeState.Active);
+            var secondChildNode = new EventTrackingNode(NodeState.Active);
+            parallel.Children.Add(firstChildNode);
+            parallel.Children.Add(secondChildNode);
+            parallel.ShouldUpdateUntilAllChildrenComplete = true;
+
+            parallel.Start();
+            parallel.Update();
+            firstChildNode.SetStatusOnNextUpdate(NodeState.Error);
+            parallel.Update();
+
+            Assert.AreEqual(NodeState.Error, parallel.Status);
         }
     }
 }

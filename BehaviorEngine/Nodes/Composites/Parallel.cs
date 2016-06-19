@@ -8,7 +8,7 @@ namespace BehaviorEngine
         public bool ShouldSuccessBreakTieWhenAllChildrenComplete { get; set; }
 
 
-        private NodeState[] ChildrenStatusOverride { get; set; }
+        private NodeState[] ChildrenStatusAlias { get; set; }
 
         private int index = 0;
 
@@ -28,23 +28,23 @@ namespace BehaviorEngine
 
             for (index = 0; index < Children.Count; index++)
             {
-                if (ChildrenStatusOverride[index] != NodeState.Active) continue;
+                if (ChildrenStatusAlias[index] != NodeState.Active) continue;
 
                 if (Children[index].Status != NodeState.Active) Children[index].Start();
 
                 Children[index].Update();
                 Status = Children[index].Status;
-                ChildrenStatusOverride[index] = Status;
+                ChildrenStatusAlias[index] = Status;
 
-                if (Status == NodeState.Failure)
+                if (Status == NodeState.Failure || Status == NodeState.Successful)
                 {
                     Children[index].End();
                     if (!ShouldUpdateUntilAllChildrenComplete) break;
                 }
-                else if (Status == NodeState.Successful)
+                else if (Status == NodeState.Error)
                 {
                     Children[index].End();
-                    if(!ShouldUpdateUntilAllChildrenComplete) break;
+                    break;
                 }
             }
 
@@ -55,21 +55,22 @@ namespace BehaviorEngine
         {
             base.Start();
 
-            if (ChildrenStatusOverride == null)
+            if (ChildrenStatusAlias == null)
             {
-                ChildrenStatusOverride = new NodeState[Children.Count];
+                ChildrenStatusAlias = new NodeState[Children.Count];
             }
 
             for (var i = 0; i < Children.Count; i++)
             {
                 Children[i].Start();
-                ChildrenStatusOverride[i] = NodeState.Active;
+                ChildrenStatusAlias[i] = NodeState.Active;
             }
         }
 
         private NodeState GetFinalStatus()
         {
-            if (ShouldUpdateUntilAllChildrenComplete) return DetermineStatusForCompleteReturnPolicy();
+            if (Status == NodeState.Error) return Status;
+            else if (ShouldUpdateUntilAllChildrenComplete) return DetermineStatusForCompleteReturnPolicy();
             else return DetermineStatusForSingleReturnPolicy();
         }
 
