@@ -5,19 +5,15 @@ namespace BehaviorEngine
 {
     public class Sequence : ANodeComposite
     {
-        private int index = 0,
-                    indexLastActive = -1;
+        private int index = 0;
 
 
         public override void Update()
         {
             for (; index < Children.Count; index++)
             {
-                if (indexLastActive != index)
-                {
-                    indexLastActive = index;
-                    Children[index].Start();
-                }
+                if (Children[index].Status != NodeState.Active) Children[index].Start();
+
                 Children[index].Update();
                 Status = Children[index].Status;
 
@@ -37,7 +33,6 @@ namespace BehaviorEngine
         {
             base.Start();
             index = 0;
-            indexLastActive = -1;
         }
 
         public override void End()
@@ -50,7 +45,6 @@ namespace BehaviorEngine
             }
 
             index = 0;
-            indexLastActive = -1;
         }
     }
 }
