@@ -43,8 +43,12 @@ namespace BehaviorEngine
         public override void End()
         {
             base.End();
-            //if this is called through a parent, then all children NEED to be ended if they can
-            foreach (var c in Children) c.End();
+
+            foreach (var c in Children)
+            {
+                if(c.Status == NodeState.Active) c.End();
+            }
+
             index = 0;
             indexLastActive = -1;
         }
