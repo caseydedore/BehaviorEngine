@@ -19,7 +19,7 @@ namespace BehaviorEngine
 
         public virtual void Start()
         {
-            Status = NodeState.Inactive;
+            Status = NodeState.Active;
         }
 
         public virtual void End()

@@ -1,4 +1,5 @@
-﻿namespace BehaviorEngine
+﻿
+namespace BehaviorEngine
 { 
 
     public class RepeaterInfinite : ANodeDecorator

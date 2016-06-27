@@ -1,7 +1,4 @@
 ﻿
-using System.Collections;
-using System;
-
 namespace BehaviorEngine
 {
     public class Inverter : ANodeDecorator
