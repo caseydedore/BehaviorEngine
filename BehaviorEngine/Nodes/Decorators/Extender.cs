@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace BehaviorEngine.Nodes.Decorators
+namespace BehaviorEngine
 {
     public class Extender : ANodeDecorator
     {
