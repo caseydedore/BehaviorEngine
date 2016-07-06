@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace BehaviorEngine
 {
     public class Parallel : ANodeComposite
