@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BehaviorEngine</RootNamespace>
     <AssemblyName>BehaviorEngine</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -43,8 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Engine\ABehaviorEngine.cs" />
-    <Compile Include="Engine\NodeStates.cs" />
+    <Compile Include="Nodes\Composites\SelectorRandom.cs" />
+    <Compile Include="Nodes\Decorators\Extender.cs" />
+    <Compile Include="Nodes\NodeStates.cs" />
     <Compile Include="Nodes\Abstracts\ANodeComposite.cs" />
     <Compile Include="Nodes\Abstracts\ANodeDecorator.cs" />
     <Compile Include="Nodes\Abstracts\ANodeTask.cs" />

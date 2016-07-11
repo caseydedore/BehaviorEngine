@@ -60,6 +60,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepeaterInfiniteTests.cs" />
     <Compile Include="RepeaterTests.cs" />
+    <Compile Include="SelectorRandomTests.cs" />
     <Compile Include="SelectorTests.cs" />
   </ItemGroup>
   <ItemGroup>
