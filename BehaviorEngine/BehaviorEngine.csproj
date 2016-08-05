@@ -61,6 +61,7 @@
     <Compile Include="Nodes\Interfaces\INodeDecorator.cs" />
     <Compile Include="Nodes\Interfaces\INodeTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\SequenceBuilder.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

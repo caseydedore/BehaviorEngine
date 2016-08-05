@@ -1,13 +1,16 @@
 ﻿
+using BehaviorEngine.Utilities;
 using System;
+using System.Collections.Generic;
 
 namespace BehaviorEngine
 {
     public class SelectorRandom : ANodeComposite
     {
         private int index = 0;
-        private int IndexMax { get; set; }
-        private Random Random { get; set; }
+        private int[] IndexOrder = new int[] { };
+
+        private SequenceBuilder sequenceBuilder = new SequenceBuilder();
 
 
         public override void Update()
@@ -18,11 +21,6 @@ namespace BehaviorEngine
                 return;
             }
 
-            if(index == -1)
-            {
-                index = Random.Next(IndexMax);
-            }
-
             Children[index].Update();
             Status = Children[index].Status;
         }
@@ -30,14 +28,19 @@ namespace BehaviorEngine
         public override void Start()
         {
             base.Start();
-            index = -1;
-            IndexMax = Children.Count - 1;
+            DetermineRandomOrder();
+            index = IndexOrder[0];
         }
 
         public override void End()
         {
             base.End();
             index = -1;
+        }
+
+        private void DetermineRandomOrder()
+        {
+            IndexOrder = sequenceBuilder.GetRandomSequence(0, Children.Count);
         }
     }
 }

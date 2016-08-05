@@ -62,6 +62,7 @@
     <Compile Include="RepeaterTests.cs" />
     <Compile Include="SelectorRandomTests.cs" />
     <Compile Include="SelectorTests.cs" />
+    <Compile Include="SequenceBuilderTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BehaviorEngine\BehaviorEngine.csproj">
