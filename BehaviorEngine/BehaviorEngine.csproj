@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Nodes\Composites\SelectorRandom.cs" />
     <Compile Include="Nodes\Decorators\Extender.cs" />
     <Compile Include="Nodes\NodeStates.cs" />
     <Compile Include="Nodes\Abstracts\ANodeComposite.cs" />

@@ -10,7 +10,7 @@ namespace BehaviorEngine
 
         private int[] IndexOrder = new int[] { };
 
-        private SequenceBuilder sequenceBuilder = new SequenceBuilder();
+        protected SequenceBuilder sequenceBuilder = new SequenceBuilder();
 
 
         public override void Update()
@@ -51,7 +51,7 @@ namespace BehaviorEngine
         {
             base.Start();
             indexLastActive = -1;
-            DetermineOrder();
+            IndexOrder = GetIndexOrder();
         }
 
         public override void End()
@@ -60,10 +60,9 @@ namespace BehaviorEngine
             indexLastActive = -1;
         }
 
-        private void DetermineOrder()
+        protected virtual int[] GetIndexOrder()
         {
-            IndexOrder = sequenceBuilder.GetSequence(0, Children.Count-1);
-            //IndexOrder = sequenceBuilder.GetRandomSequence(0, Children.Count);
+            return sequenceBuilder.GetSequence(0, Children.Count-1);
         }
     }
 }
