@@ -3,9 +3,13 @@ namespace BehaviorEngine
 {
     public class Overrider : ANodeDecorator
     {
-        public NodeState SuccessOverride { get; set; }
-        public NodeState ActiveOverride { get; set; }
-        public NodeState FailureOverride { get; set; }
+        public NodeState SuccessOverride { get { return successOverride; } set { successOverride = value; } }
+        public NodeState ActiveOverride { get { return activeOverride; } set { activeOverride = value; } }
+        public NodeState FailureOverride { get { return failureOverride; } set { failureOverride = value; } }
+
+        private NodeState successOverride = NodeState.Successful,
+                          failureOverride = NodeState.Failure,
+                          activeOverride = NodeState.Active;
 
         private NodeState childStatus = NodeState.Inactive;
 
