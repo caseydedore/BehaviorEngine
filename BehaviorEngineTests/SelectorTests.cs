@@ -9,17 +9,6 @@ namespace BehaviorEngineTests
     public class SelectorTests
     {
         [TestMethod]
-        public void NoChildren()
-        {
-            var selector = new Selector();
-
-            selector.Start();
-            selector.Update();
-
-            Assert.AreEqual(NodeState.Error, selector.Status);
-        }
-
-        [TestMethod]
         public void ChildSuccess()
         {
             var selector = new Selector();
@@ -60,6 +49,7 @@ namespace BehaviorEngineTests
             selector.Update();
 
             Assert.IsTrue(childNode.HasStarted);
+            Assert.IsFalse(childNode.HasEnded);
             Assert.AreEqual(1, childNode.UpdatesTotal);
             Assert.AreEqual(NodeState.Active, selector.Status);
         }
@@ -92,6 +82,40 @@ namespace BehaviorEngineTests
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
             Assert.AreEqual(0, secondChild.UpdatesTotal);
+            Assert.AreEqual(NodeState.Successful, selector.Status);
+        }
+
+        [TestMethod]
+        public void FirstChildTakesPrecedenceOverSecond()
+        {
+            var selector = new Selector();
+            var firstChild = new EventTrackingNode(NodeState.Failure);
+            var secondChild = new EventTrackingNode(NodeState.Active);
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
+
+            selector.Start();
+            selector.Update();
+            firstChild.SetStatusOnNextUpdate(NodeState.Active);
+            selector.Update();
+            selector.Update();
+
+            Assert.AreEqual(3, firstChild.UpdatesTotal);
+            Assert.AreEqual(1, secondChild.UpdatesTotal);
+        }
+
+        [TestMethod]
+        public void FirstChildFails()
+        {
+            var selector = new Selector();
+            var firstChild = new EventTrackingNode(NodeState.Failure);
+            var secondChild = new EventTrackingNode(NodeState.Successful);
+            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
+
+            selector.Start();
+            selector.Update();
+
+            Assert.AreEqual(1, firstChild.UpdatesTotal);
+            Assert.AreEqual(1, secondChild.UpdatesTotal);
             Assert.AreEqual(NodeState.Successful, selector.Status);
         }
 
@@ -161,40 +185,6 @@ namespace BehaviorEngineTests
             Assert.AreEqual(3, firstChild.UpdatesTotal);
             Assert.AreEqual(3, secondChild.UpdatesTotal);
             Assert.AreEqual(NodeState.Active, selector.Status);
-        }
-
-        [TestMethod]
-        public void EarlierChildActiveTakesPrecedence()
-        {
-            var selector = new Selector();
-            var firstChild = new EventTrackingNode(NodeState.Failure);
-            var secondChild = new EventTrackingNode(NodeState.Active);
-            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
-
-            selector.Start();
-            selector.Update();
-            firstChild.SetStatusOnNextUpdate(NodeState.Active);
-            selector.Update();
-
-            Assert.AreEqual(2, firstChild.UpdatesTotal);
-            Assert.AreEqual(1, secondChild.UpdatesTotal);
-        }
-
-        [TestMethod]
-        public void EarlierChildSuccessTakesPrecedence()
-        {
-            var selector = new Selector();
-            var firstChild = new EventTrackingNode(NodeState.Failure);
-            var secondChild = new EventTrackingNode(NodeState.Active);
-            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
-
-            selector.Start();
-            selector.Update();
-            firstChild.SetStatusOnNextUpdate(NodeState.Successful);
-            selector.Update();
-
-            Assert.AreEqual(2, firstChild.UpdatesTotal);
-            Assert.AreEqual(1, secondChild.UpdatesTotal);
         }
     }
 }

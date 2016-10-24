@@ -5,8 +5,11 @@ namespace BehaviorEngine
 {
     public class Selector : ANodeComposite
     {
+        private const int INDEX_LAST_ACTIVE_RESET = -1;
+
         private int index = 0,
-                    indexLastActive = -1;
+                    indexCurrent = 0,
+                    indexLastActive = INDEX_LAST_ACTIVE_RESET;
 
         private int[] IndexOrder = new int[] { };
 
@@ -15,33 +18,24 @@ namespace BehaviorEngine
 
         public override void Update()
         {
-            if(Children.Count <= 0)
-            {
-                Status = NodeState.Error;
-                return;
-            }
-
             for (index = 0; index < IndexOrder.Length; index++)
             {
-                if (IndexOrder[index] != indexLastActive)
+                if (index != indexLastActive)
                 {
-                    Children[index].Start();
+                    Children[IndexOrder[index]].Start();
+                    indexCurrent = index;
                 }
 
                 Children[IndexOrder[index]].Update();
                 Status = Children[IndexOrder[index]].Status;
 
-                if (Status == NodeState.Successful) break;
-                else if (Status == NodeState.Active)
+                if (Status == NodeState.Failure && index + 1 == IndexOrder.Length)
+                    break;
+                else if (Status == NodeState.Active || Status == NodeState.Successful)
                 {
-                    if (IndexOrder[index] != indexLastActive)
-                    {
-                        if (indexLastActive >= 0)
-                        {
-                            Children[indexLastActive].End();
-                        }
-                        indexLastActive = IndexOrder[index];
-                    }
+                    if(indexLastActive >= 0 && indexLastActive != index)
+                        Children[IndexOrder[indexLastActive]].End();
+                    indexLastActive = index;
                     break;
                 }
             }
@@ -50,14 +44,16 @@ namespace BehaviorEngine
         public override void Start()
         {
             base.Start();
-            indexLastActive = -1;
+            indexCurrent = 0;
+            indexLastActive = INDEX_LAST_ACTIVE_RESET;
             IndexOrder = GetIndexOrder();
         }
 
         public override void End()
         {
             base.End();
-            indexLastActive = -1;
+            indexLastActive = INDEX_LAST_ACTIVE_RESET;
+            indexCurrent = 0;
         }
 
         protected virtual int[] GetIndexOrder()
