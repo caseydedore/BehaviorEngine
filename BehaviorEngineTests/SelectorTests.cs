@@ -86,24 +86,6 @@ namespace BehaviorEngineTests
         }
 
         [TestMethod]
-        public void FirstChildTakesPrecedenceOverSecond()
-        {
-            var selector = new Selector();
-            var firstChild = new EventTrackingNode(NodeState.Failure);
-            var secondChild = new EventTrackingNode(NodeState.Active);
-            selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
-
-            selector.Start();
-            selector.Update();
-            firstChild.SetStatusOnNextUpdate(NodeState.Active);
-            selector.Update();
-            selector.Update();
-
-            Assert.AreEqual(3, firstChild.UpdatesTotal);
-            Assert.AreEqual(1, secondChild.UpdatesTotal);
-        }
-
-        [TestMethod]
         public void FirstChildFails()
         {
             var selector = new Selector();
@@ -182,7 +164,7 @@ namespace BehaviorEngineTests
             selector.Update();
             selector.Update();
 
-            Assert.AreEqual(3, firstChild.UpdatesTotal);
+            Assert.AreEqual(1, firstChild.UpdatesTotal);
             Assert.AreEqual(3, secondChild.UpdatesTotal);
             Assert.AreEqual(NodeState.Active, selector.Status);
         }

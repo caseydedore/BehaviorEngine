@@ -5,11 +5,10 @@ namespace BehaviorEngine
 {
     public class Selector : ANodeComposite
     {
-        private const int INDEX_LAST_ACTIVE_RESET = -1;
+        private const int INDEX_DEFAULT = 0;
 
-        private int index = 0,
-                    indexCurrent = 0,
-                    indexLastActive = INDEX_LAST_ACTIVE_RESET;
+        private int index = INDEX_DEFAULT,
+                    indexLastActive = INDEX_DEFAULT;
 
         private int[] IndexOrder = new int[] { };
 
@@ -18,42 +17,39 @@ namespace BehaviorEngine
 
         public override void Update()
         {
-            for (index = 0; index < IndexOrder.Length; index++)
+            for (index = indexLastActive; index < IndexOrder.Length; index++)
             {
                 if (index != indexLastActive)
                 {
                     Children[IndexOrder[index]].Start();
-                    indexCurrent = index;
+                    indexLastActive = index;
                 }
 
                 Children[IndexOrder[index]].Update();
                 Status = Children[IndexOrder[index]].Status;
 
-                if (Status == NodeState.Failure && index + 1 == IndexOrder.Length)
-                    break;
-                else if (Status == NodeState.Active || Status == NodeState.Successful)
+                if (Status == NodeState.Active) break;
+                else
                 {
-                    if(indexLastActive >= 0 && indexLastActive != index)
-                        Children[IndexOrder[indexLastActive]].End();
-                    indexLastActive = index;
-                    break;
+                    Children[IndexOrder[index]].End();
+
+                    if (Status == NodeState.Successful) break;
                 }
+
             }
         }
 
         public override void Start()
         {
             base.Start();
-            indexCurrent = 0;
-            indexLastActive = INDEX_LAST_ACTIVE_RESET;
+            indexLastActive = INDEX_DEFAULT;
             IndexOrder = GetIndexOrder();
         }
 
         public override void End()
         {
             base.End();
-            indexLastActive = INDEX_LAST_ACTIVE_RESET;
-            indexCurrent = 0;
+            indexLastActive = INDEX_DEFAULT;
         }
 
         protected virtual int[] GetIndexOrder()
