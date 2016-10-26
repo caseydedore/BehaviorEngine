@@ -10,8 +10,14 @@ namespace BehaviorEngine
 
         public virtual void Update(){}
 
-        public abstract void Start();
+        public virtual void Start()
+        {
+            Status = NodeState.Active;
+        }
 
-        public abstract void End();
+        public virtual void End()
+        {
+            Status = NodeState.Inactive;
+        }
     }
 }
