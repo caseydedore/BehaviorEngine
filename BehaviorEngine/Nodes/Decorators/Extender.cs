@@ -9,7 +9,7 @@ namespace BehaviorEngine
             Status = Child.Status;
         }
 
-        public override void Start()
+        public override void StartRoutine()
         {
             base.Start();
             Child.Start();

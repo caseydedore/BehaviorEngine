@@ -16,7 +16,7 @@ namespace BehaviorEngineTests
             var nodeStatus = NodeState.Inactive;
 
             //act
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             nodeStatus = repeater.Status;
 
@@ -31,7 +31,7 @@ namespace BehaviorEngineTests
             repeater.Child = new FixedStateNode(NodeState.Successful);
             var nodeStatus = NodeState.Inactive;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             nodeStatus = repeater.Status;
 
@@ -45,7 +45,7 @@ namespace BehaviorEngineTests
             repeater.Child = new FixedStateNode(NodeState.Failure);
             var nodeStatus = NodeState.Inactive;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             nodeStatus = repeater.Status;
 
@@ -59,7 +59,7 @@ namespace BehaviorEngineTests
             repeater.Child = new FixedStateNode(NodeState.Active);
             var nodeStatus = NodeState.Inactive;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             nodeStatus = repeater.Status;
 
@@ -73,7 +73,7 @@ namespace BehaviorEngineTests
             repeater.Child = new FixedStateNode(NodeState.Error);
             var nodeStatus = NodeState.Inactive;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             nodeStatus = repeater.Status;
 
@@ -86,7 +86,7 @@ namespace BehaviorEngineTests
             var repeater = new Repeater(2, true);
             repeater.Child = new FixedStateNode(NodeState.Successful);
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
 
             Assert.AreEqual(NodeState.Active, repeater.Status);
@@ -98,7 +98,7 @@ namespace BehaviorEngineTests
             var repeater = new Repeater(2, true);
             repeater.Child = new FixedStateNode(NodeState.Failure);
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
 
             Assert.AreEqual(NodeState.Active, repeater.Status);
@@ -110,7 +110,7 @@ namespace BehaviorEngineTests
             var repeater = new Repeater(2, true);
             repeater.Child = new FixedStateNode(NodeState.Error);
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
 
             Assert.AreEqual(NodeState.Active, repeater.Status);
@@ -123,7 +123,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             repeater.Update();
             repeater.Update();
@@ -141,7 +141,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
 
             Assert.AreEqual(1, childNode.StartsTotal);
@@ -156,7 +156,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Successful);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             repeater.Update();
             repeater.Update();
@@ -171,7 +171,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Error);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             Assert.IsTrue(childNode.HasStarted);
             Assert.AreEqual(1, childNode.StartsTotal);
@@ -183,7 +183,7 @@ namespace BehaviorEngineTests
             var repeater = new Repeater(0);
             repeater.Child = new FixedStateNode(NodeState.Active);
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
 
             Assert.AreEqual(NodeState.Inactive, repeater.Status);
@@ -195,7 +195,7 @@ namespace BehaviorEngineTests
             var repeater = new Repeater(1);
             repeater.Child = new FixedStateNode(NodeState.Inactive);
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             repeater.Update();
 

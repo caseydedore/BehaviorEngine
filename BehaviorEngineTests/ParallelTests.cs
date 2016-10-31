@@ -13,7 +13,7 @@ namespace BehaviorEngineTests
         {
             var parallel = new Parallel();
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
 
             Assert.AreEqual(NodeState.Error, parallel.Status);
@@ -26,7 +26,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Active);
             parallel.Children.Add(childNode);
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
 
             Assert.AreEqual(NodeState.Active, parallel.Status);
@@ -41,7 +41,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
 
-            parallel.Start();
+            parallel.StartRoutine();
             firstChildNode.SetStatusOnNextUpdate(NodeState.Active);
             secondChildNode.SetStatusOnNextUpdate(NodeState.Active);
             parallel.Update();
@@ -62,7 +62,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             parallel.Children.Add(childNode);
 
-            parallel.Start();
+            parallel.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Active);
             parallel.Update();
 
@@ -77,7 +77,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Active);
             parallel.Children.Add(childNode);
 
-            parallel.End();
+            parallel.EndNode();
 
             Assert.IsTrue(childNode.HasEnded);
         }
@@ -89,7 +89,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             parallel.Children.Add(childNode);
 
-            parallel.End();
+            parallel.EndNode();
 
             Assert.IsFalse(childNode.HasEnded);
         }
@@ -103,7 +103,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
 
             Assert.AreEqual(NodeState.Failure, parallel.Status);
@@ -118,7 +118,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
 
             Assert.AreEqual(NodeState.Failure, parallel.Status);
@@ -133,7 +133,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
 
 
@@ -149,7 +149,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(firstChildNode);
             parallel.Children.Add(secondChildNode);
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
 
             Assert.AreEqual(NodeState.Successful, parallel.Status);
@@ -165,7 +165,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(secondChildNode);
             parallel.ShouldUpdateUntilAllChildrenComplete = true;
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
             parallel.Update();
             firstChildNode.SetStatusOnNextUpdate(NodeState.Successful);
@@ -188,7 +188,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(secondChildNode);
             parallel.ShouldUpdateUntilAllChildrenComplete = true;
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
             firstChildNode.SetStatusOnNextUpdate(NodeState.Successful);
             parallel.Update();
@@ -210,7 +210,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(secondChildNode);
             parallel.ShouldUpdateUntilAllChildrenComplete = true;
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
             firstChildNode.SetStatusOnNextUpdate(NodeState.Failure);
             parallel.Update();
@@ -232,7 +232,7 @@ namespace BehaviorEngineTests
             parallel.Children.Add(secondChildNode);
             parallel.ShouldUpdateUntilAllChildrenComplete = true;
 
-            parallel.Start();
+            parallel.StartRoutine();
             parallel.Update();
             firstChildNode.SetStatusOnNextUpdate(NodeState.Error);
             parallel.Update();

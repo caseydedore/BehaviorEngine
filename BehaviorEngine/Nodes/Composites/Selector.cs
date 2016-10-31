@@ -41,7 +41,7 @@ namespace BehaviorEngine
             }
         }
 
-        public override void Start()
+        public override void StartRoutine()
         {
             base.Start();
             indexCurrent = 0;
@@ -49,9 +49,9 @@ namespace BehaviorEngine
             IndexOrder = GetIndexOrder();
         }
 
-        public override void End()
+        public override void EndNode()
         {
-            base.End();
+            base.EndNode();
             indexLastActive = INDEX_LAST_ACTIVE_RESET;
             indexCurrent = 0;
         }

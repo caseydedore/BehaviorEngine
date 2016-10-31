@@ -3,33 +3,30 @@ using System;
 
 namespace BehaviorEngine
 {
-    public abstract class ANodeComposite : INode
+    public abstract class ANodeComposite : ANode
     {
-        public NodeState Status { get; protected set; }
-
-        public List<INode> Children { get; set; }
+        private List<ANode> Children { get; set; }
 
 
         public ANodeComposite()
         {
-            Children = new List<INode>();
+            Children = new List<ANode>();
         }
 
-        public abstract void Update();
-
-        public virtual void Start()
+        public void AddChild(ANode child)
         {
-            Status = NodeState.Active;
+            child.AddStartEvent(new NodeEvent(ChildStartEvent));
+            child.AddEndNodeEvent(new NodeEvent(ChildEndEvent));
+            Children.Add(child);
         }
 
-        public virtual void End()
+        public override void EndNode()
         {
+            base.End();
             foreach (var c in Children)
             {
                 if(c.Status == NodeState.Active) c.End();
             }
-
-            Status = NodeState.Inactive;
         }
 
         protected int GetNumberOfChildrenWithStatus(NodeState status)

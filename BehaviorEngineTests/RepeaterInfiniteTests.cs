@@ -15,7 +15,7 @@ namespace BehaviorEngineTests
             var nodeStatus = NodeState.Inactive;
 
             //act
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             nodeStatus = repeater.Status;
 
@@ -30,7 +30,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
 
             Assert.AreEqual(true, childNode.HasStarted);
@@ -43,8 +43,8 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
-            repeater.End();
+            repeater.StartRoutine();
+            repeater.EndNode();
 
             Assert.AreEqual(false, childNode.HasStarted);
             Assert.AreEqual(false, childNode.HasEnded);
@@ -58,9 +58,9 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
-            repeater.End();
+            repeater.EndNode();
 
             Assert.AreEqual(true, childNode.HasEnded);
         }
@@ -72,7 +72,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             repeater.Update();
             repeater.Update();
@@ -92,7 +92,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             repeater.Update();
             childNode.SetStatusOnNextUpdate(NodeState.Successful);
@@ -110,7 +110,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Error);
             repeater.Update();
 
@@ -125,7 +125,7 @@ namespace BehaviorEngineTests
             var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             childNode.SetStatusOnNextUpdate(NodeState.Failure);
             repeater.Update();
@@ -140,7 +140,7 @@ namespace BehaviorEngineTests
             var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             childNode.SetStatusOnNextUpdate(NodeState.Error);
             repeater.Update();
@@ -157,7 +157,7 @@ namespace BehaviorEngineTests
             var status = NodeState.Error;
             var count = 1;
 
-            repeater.Start();
+            repeater.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Active);
 
             for (; count < 1000; count++)
@@ -177,7 +177,7 @@ namespace BehaviorEngineTests
             var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             childNode.SetStatusOnNextUpdate(NodeState.Failure);
             repeater.Update();
@@ -192,7 +192,7 @@ namespace BehaviorEngineTests
             var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             childNode.SetStatusOnNextUpdate(NodeState.Error);
             repeater.Update();
@@ -207,7 +207,7 @@ namespace BehaviorEngineTests
             var childNode = new AdjustableStateNode(NodeState.Inactive);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             childNode.SetStatusOnNextUpdate(NodeState.Successful);
             repeater.Update();
@@ -222,11 +222,11 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Successful);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
             repeater.Update();
             repeater.Update();
-            repeater.End();
+            repeater.EndNode();
 
             Assert.IsTrue(childNode.HasEnded);
         }
@@ -238,7 +238,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Error);
             repeater.Child = childNode;
 
-            repeater.Start();
+            repeater.StartRoutine();
             repeater.Update();
 
             Assert.IsTrue(childNode.HasStarted);

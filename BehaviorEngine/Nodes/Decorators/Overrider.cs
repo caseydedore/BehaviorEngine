@@ -35,7 +35,7 @@ namespace BehaviorEngine
             if (childStatus != NodeState.Active || Status != NodeState.Active) Child.End();
         }
 
-        public override void Start()
+        public override void StartRoutine()
         {
             base.Start();
             childStatus = NodeState.Inactive;

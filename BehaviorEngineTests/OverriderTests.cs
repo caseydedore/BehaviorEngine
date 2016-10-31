@@ -17,7 +17,7 @@ namespace BehaviorEngineTests
         {
             var overrider = new Overrider();
 
-            overrider.Start();
+            overrider.StartRoutine();
             overrider.Update();
 
             Assert.AreEqual(NodeState.Error, overrider.Status);
@@ -30,7 +30,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             overrider.Child = childNode;
 
-            overrider.Start();
+            overrider.StartRoutine();
             overrider.Update();
 
             Assert.IsTrue(childNode.HasStarted);
@@ -43,7 +43,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             overrider.Child = childNode;
 
-            overrider.Start();
+            overrider.StartRoutine();
             overrider.Update();
             overrider.End();
 
@@ -59,7 +59,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             overrider.Child = childNode;
 
-            overrider.Start();
+            overrider.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Successful);
             overrider.Update();
 
@@ -75,7 +75,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             overrider.Child = childNode;
 
-            overrider.Start();
+            overrider.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Active);
             overrider.Update();
 
@@ -91,7 +91,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             overrider.Child = childNode;
 
-            overrider.Start();
+            overrider.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Failure);
             overrider.Update();
 
@@ -106,7 +106,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             overrider.Child = childNode;
 
-            overrider.Start();
+            overrider.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Active);
             overrider.Update();
 
@@ -123,7 +123,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Inactive);
             overrider.Child = childNode;
 
-            overrider.Start();
+            overrider.StartRoutine();
             childNode.SetStatusOnNextUpdate(NodeState.Active);
             overrider.Update();
 

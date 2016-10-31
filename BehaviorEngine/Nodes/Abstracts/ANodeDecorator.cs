@@ -3,23 +3,24 @@ using System;
 
 namespace BehaviorEngine
 {
-    public abstract class ANodeDecorator : INode
+    public abstract class ANodeDecorator : ANode
     {
-        public NodeState Status { get; protected set; }
+        private ANode Child { get; set; }
 
-        public INode Child { get; set; }
-
-        public abstract void Update();
-
-        public virtual void Start()
+        public void SetChild(ANode child)
         {
-            Status = NodeState.Active;
+            child.AddStartEvent(Started);
+            child.AddEndEvent(Ended);
+            child.AddFinishedEvent(ChildFinished);
+
+            Child = child;
         }
 
-        public virtual void End()
+        protected override void EndRoutine()
         {
-            if (Child != null && Child.Status == NodeState.Active) Child.End();
-            Status = NodeState.Inactive;
+            Child.End();
         }
+
+        protected abstract void ChildFinished(NodeState state);
     }
 }

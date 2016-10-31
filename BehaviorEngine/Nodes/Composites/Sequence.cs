@@ -22,22 +22,22 @@ namespace BehaviorEngine
                 {
                     if (Status == NodeState.Failure || Status == NodeState.Error)
                     {
-                        End();
+                        EndNode();
                     }
                     break;
                 }
             }
         }
 
-        public override void Start()
+        public override void StartRoutine()
         {
             base.Start();
             index = 0;
         }
 
-        public override void End()
+        public override void EndNode()
         {
-            base.End();
+            base.EndNode();
 
             foreach (var c in Children)
             {

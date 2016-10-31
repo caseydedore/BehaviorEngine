@@ -15,7 +15,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Successful);
             selector.Children.Add(childNode);
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.IsTrue(childNode.HasStarted);
@@ -30,7 +30,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Failure);
             selector.Children.Add(childNode);
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.IsTrue(childNode.HasStarted);
@@ -45,7 +45,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Active);
             selector.Children.Add(childNode);
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.IsTrue(childNode.HasStarted);
@@ -61,7 +61,7 @@ namespace BehaviorEngineTests
             var childNode = new EventTrackingNode(NodeState.Error);
             selector.Children.Add(childNode);
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.IsTrue(childNode.HasStarted);
@@ -77,7 +77,7 @@ namespace BehaviorEngineTests
             var secondChild = new EventTrackingNode(NodeState.Successful);
             selector.Children.AddRange( new List<INode>() { firstChild, secondChild });
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
@@ -93,7 +93,7 @@ namespace BehaviorEngineTests
             var secondChild = new EventTrackingNode(NodeState.Active);
             selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
             firstChild.SetStatusOnNextUpdate(NodeState.Active);
             selector.Update();
@@ -111,7 +111,7 @@ namespace BehaviorEngineTests
             var secondChild = new EventTrackingNode(NodeState.Successful);
             selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
@@ -127,7 +127,7 @@ namespace BehaviorEngineTests
             var secondChild = new EventTrackingNode(NodeState.Successful);
             selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
@@ -143,7 +143,7 @@ namespace BehaviorEngineTests
             var secondChild = new EventTrackingNode(NodeState.Failure);
             selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
 
             Assert.AreEqual(1, firstChild.UpdatesTotal);
@@ -159,7 +159,7 @@ namespace BehaviorEngineTests
             var secondChild = new EventTrackingNode(NodeState.Successful);
             selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
             selector.Update();
             selector.Update();
@@ -177,7 +177,7 @@ namespace BehaviorEngineTests
             var secondChild = new EventTrackingNode(NodeState.Active);
             selector.Children.AddRange(new List<INode>() { firstChild, secondChild });
 
-            selector.Start();
+            selector.StartRoutine();
             selector.Update();
             selector.Update();
             selector.Update();

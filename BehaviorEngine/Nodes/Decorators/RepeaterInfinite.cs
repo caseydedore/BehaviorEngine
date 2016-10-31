@@ -39,15 +39,15 @@ namespace BehaviorEngine
             }
         }
 
-        public override void Start()
+        public override void StartRoutine()
         {
             base.Start();
             childStatus = NodeState.Inactive;
         }
 
-        public override void End()
+        public override void EndNode()
         {
-            base.End();
+            base.EndRoutine();
             childStatus = NodeState.Inactive;
         }
     }
