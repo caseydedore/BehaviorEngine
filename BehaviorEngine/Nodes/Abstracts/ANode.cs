@@ -26,6 +26,8 @@ namespace BehaviorEngine
 
         public void End()
         {
+            if (State != NodeState.Active) return;
+
             EndRoutine();
             Ended(this);
         }

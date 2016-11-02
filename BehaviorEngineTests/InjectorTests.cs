@@ -1,69 +1,69 @@
-﻿using BehaviorEngine;
-using BehaviorEngineTests.Nodes;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿//using BehaviorEngine;
+//using BehaviorEngineTests.Nodes;
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace BehaviorEngineTests
-{
-    [TestClass]
-    public class InjectorTests
-    {
-        [TestMethod]
-        public void NoChild()
-        {
-            var injector = new Injector(() => NodeState.Failure);
+//namespace BehaviorEngineTests
+//{
+//    [TestClass]
+//    public class InjectorTests
+//    {
+//        [TestMethod]
+//        public void NoChild()
+//        {
+//            var injector = new Injector(() => NodeState.Failure);
 
-            injector.Start();
-            injector.Update();
+//            injector.Start();
+//            injector.Update();
 
-            Assert.AreEqual(NodeState.Error, injector.Status);
-        }
+//            Assert.AreEqual(NodeState.Error, injector.Status);
+//        }
 
-        [TestMethod]
-        public void ChildActive()
-        {
-            var injector = new Injector(() => NodeState.Failure);
-            injector.Child = new FixedStateNode(NodeState.Active);
+//        [TestMethod]
+//        public void ChildActive()
+//        {
+//            var injector = new Injector(() => NodeState.Failure);
+//            injector.Child = new FixedStateNode(NodeState.Active);
 
-            injector.Start();
-            injector.Update();
+//            injector.Start();
+//            injector.Update();
 
-            Assert.AreEqual(NodeState.Active, injector.Status);
-        }
+//            Assert.AreEqual(NodeState.Active, injector.Status);
+//        }
 
-        [TestMethod]
-        public void ChildSuccess()
-        {
-            var injector = new Injector(() => NodeState.Failure);
-            injector.Child = new FixedStateNode(NodeState.Successful);
+//        [TestMethod]
+//        public void ChildSuccess()
+//        {
+//            var injector = new Injector(() => NodeState.Failure);
+//            injector.Child = new FixedStateNode(NodeState.Successful);
 
-            injector.Start();
-            injector.Update();
+//            injector.Start();
+//            injector.Update();
 
-            Assert.AreEqual(NodeState.Failure, injector.Status);
-        }
+//            Assert.AreEqual(NodeState.Failure, injector.Status);
+//        }
 
-        [TestMethod]
-        public void ChildFailure()
-        {
-            var injector = new Injector(() => NodeState.Successful);
-            injector.Child = new FixedStateNode(NodeState.Failure);
+//        [TestMethod]
+//        public void ChildFailure()
+//        {
+//            var injector = new Injector(() => NodeState.Successful);
+//            injector.Child = new FixedStateNode(NodeState.Failure);
 
-            injector.Start();
-            injector.Update();
+//            injector.Start();
+//            injector.Update();
 
-            Assert.AreEqual(NodeState.Successful, injector.Status);
-        }
+//            Assert.AreEqual(NodeState.Successful, injector.Status);
+//        }
 
-        [TestMethod]
-        public void ChildError()
-        {
-            var injector = new Injector(() => NodeState.Successful);
-            injector.Child = new FixedStateNode(NodeState.Error);
+//        [TestMethod]
+//        public void ChildError()
+//        {
+//            var injector = new Injector(() => NodeState.Successful);
+//            injector.Child = new FixedStateNode(NodeState.Error);
 
-            injector.Start();
-            injector.Update();
+//            injector.Start();
+//            injector.Update();
 
-            Assert.AreEqual(NodeState.Error, injector.Status);
-        }
-    }
-}
+//            Assert.AreEqual(NodeState.Error, injector.Status);
+//        }
+//    }
+//}

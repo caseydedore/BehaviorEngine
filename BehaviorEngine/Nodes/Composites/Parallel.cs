@@ -1,4 +1,7 @@
 ﻿
+using System;
+using System.Linq;
+
 namespace BehaviorEngine
 {
     public class Parallel : ANodeComposite
@@ -6,7 +9,7 @@ namespace BehaviorEngine
         public bool ShouldUpdateUntilAllChildrenComplete { get; set; }
         public bool ShouldSuccessBreakTieWhenAllChildrenComplete { get; set; }
 
-
+        private NodeState Status { get; set; }
         private NodeState[] ChildrenStatusAlias { get; set; }
 
         private int index = 0;
@@ -17,43 +20,17 @@ namespace BehaviorEngine
             ShouldUpdateUntilAllChildrenComplete = false;
         }
 
-        public override void Update()
+        protected override NodeState UpdateRoutine()
         {
-            if (Children.Count <= 0)
-            {
-                Status = NodeState.Error;
-                return;
-            }
-
-            for (index = 0; index < Children.Count; index++)
-            {
-                if (ChildrenStatusAlias[index] != NodeState.Active) continue;
-
-                if (Children[index].Status != NodeState.Active) Children[index].Start();
-
-                Children[index].Update();
-                Status = Children[index].Status;
-                ChildrenStatusAlias[index] = Status;
-
-                if (Status == NodeState.Failure || Status == NodeState.Successful)
-                {
-                    Children[index].End();
-                    if (!ShouldUpdateUntilAllChildrenComplete) break;
-                }
-                else if (Status == NodeState.Error)
-                {
-                    Children[index].End();
-                    break;
-                }
-            }
+           
 
             Status = GetFinalStatus();
+
+            return GetFinalStatus();
         }
 
-        public override void StartRoutine()
+        protected override void StartRoutine()
         {
-            base.Start();
-
             if (ChildrenStatusAlias == null)
             {
                 ChildrenStatusAlias = new NodeState[Children.Count];
@@ -90,6 +67,19 @@ namespace BehaviorEngine
 
             if (ShouldSuccessBreakTieWhenAllChildrenComplete) return NodeState.Successful;
             else return NodeState.Failure;
+        }
+
+        protected int GetNumberOfChildrenWithStatus(NodeState state)
+        {
+            var childrenWithState = ChildrenStatusAlias.Select(x => x).Where(x => x == state);
+
+            return childrenWithState.Count();
+        }
+
+        protected override void ChildFinished(NodeState state)
+        {
+            //a child should cause this node to re-evaluate in the engine
+            throw new NotImplementedException();
         }
     }
 }

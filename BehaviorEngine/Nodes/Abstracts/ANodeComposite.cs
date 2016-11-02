@@ -5,7 +5,7 @@ namespace BehaviorEngine
 {
     public abstract class ANodeComposite : ANode
     {
-        private List<ANode> Children { get; set; }
+        protected List<ANode> Children { get; set; }
 
 
         public ANodeComposite()
@@ -15,30 +15,21 @@ namespace BehaviorEngine
 
         public void AddChild(ANode child)
         {
-            child.AddStartEvent(new NodeEvent(ChildStartEvent));
-            child.AddEndNodeEvent(new NodeEvent(ChildEndEvent));
+            child.AddStartEvent(Started);
+            child.AddEndEvent(Ended);
+            child.AddFinishedEvent(ChildFinished);
+
             Children.Add(child);
         }
 
-        public override void EndNode()
+        protected override void EndRoutine()
         {
-            base.End();
             foreach (var c in Children)
             {
-                if(c.Status == NodeState.Active) c.End();
+                c.End();
             }
         }
 
-        protected int GetNumberOfChildrenWithStatus(NodeState status)
-        {
-            var number = 0;
-
-            foreach (var c in Children)
-            {
-                if (c.Status == status) number++;
-            }
-
-            return number;
-        }
+        protected abstract void ChildFinished(NodeState state);
     }
 }

@@ -5,7 +5,7 @@ namespace BehaviorEngine
 {
     public abstract class ANodeDecorator : ANode
     {
-        private ANode Child { get; set; }
+        protected ANode Child { get; set; }
 
         public void SetChild(ANode child)
         {

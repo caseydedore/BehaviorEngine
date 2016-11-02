@@ -22,24 +22,24 @@ namespace BehaviorEngineTests.Nodes
 
         public EventTrackingNode(NodeState defaultState) : base(defaultState) { }
 
-        public override void Start()
+        protected override void StartRoutine()
         {
             hasStarted = true;
             StartsTotal++;
         }
 
-        public override void End()
+        protected override void EndRoutine()
         {
             hasEnded = true;
             EndsTotal++;
             UpdatesCurrent = 0;
         }
 
-        public override void Update()
+        protected override NodeState UpdateRoutine()
         {
-            base.Update();
             UpdatesTotal++;
             UpdatesCurrent++;
+            return Status;
         }
     }
 }

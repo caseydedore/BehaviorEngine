@@ -7,8 +7,8 @@ namespace BehaviorEngine
 {
     public abstract class ABehaviorEngine
     {
-        private ANode Child { get; set; }
-        private List<ANode> RunningNodes { get; set; }
+        protected ANode Child { get; set; }
+        protected List<ANode> RunningNodes { get; set; }
 
 
         public ABehaviorEngine()
